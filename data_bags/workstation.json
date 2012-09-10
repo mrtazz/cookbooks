@@ -1,0 +1,42 @@
+{
+  "id": "workstation",
+  "brews": ["hub", "ctags", "check", "redis"],
+  "zip-apps": {"Wallet": {
+              "source": "http://www.acrylicapps.com/downloads/Wallet.zip",
+              "checksum": "da598fc17490c4813f544d5969eb969d29d975b0c90f69106e268e776fd22edf"},
+               "Tower": {
+                  "app": "Tower",
+                  "source": "https://macapps.fournova.com/tower1/download",
+                  "checksum": "03fcc6511545258db4fea521c76061733d52c633c45fd0bd813a379fb0fe1d7a"}
+              },
+  "dmgs": {"Dropbox": {
+              "volumes_dir": "Dropbox Installer",
+              "url": "http://www.dropbox.com/download?plat=mac",
+              "checksum": "b4ea620ca22b0517b75753283ceb82326aca8bc3c86212fbf725de6446a96a13"
+            },
+            "Google Chrome": {
+              "dmg_name": "googlechrome",
+              "url": "https://dl-ssl.google.com/chrome/mac/stable/GGRM/googlechrome.dmg",
+              "checksum": "7daa2dc5c46d9bfb14f1d7ff4b33884325e5e63e694810adc58f14795165c91a"
+            },
+            "Firefox": {
+              "url": "http://mozilla.ftp.halifax.rwth-aachen.de/mozilla/firefox/releases/6.0.2/mac/en-US/Firefox%206.0.2.dmg",
+              "checksum": "6c594a3bbd642dcdbf34cdcfa67fd1ec89855f37cbd42feea7813e625335c19c"
+            },
+            "Skype": {
+              "url": "http://www.skype.com/go/getskype-macosx.dmg",
+              "checksum": "f13c778cef334f36f10c5df9675838bb751477d867b755a940718e4969a33a48"
+            },
+    },
+  "gems": {"defaults": ["rake", "chef", "mustache", "bundler", "vagrant", "knife-github-cookbooks", "chef-groveio-handler"]},
+  "git": {"vars":{"name": "Daniel Schauenberg",
+                  "email": "d@unwiredcouch.com",
+                  "editor": "vim"},
+          "gitignores": ["C++",
+                         "Python",
+                         "Ruby",
+                         "Erlang",
+                         "Global/vim",
+                         "Global/OSX"]
+         }
+}

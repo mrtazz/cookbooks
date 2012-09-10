@@ -1,0 +1,9 @@
+<% @accounts.each do |a| %>
+server <%= a["server"] %>
+proto  <%= a["proto"] %>
+user   <%= a["user"] %> smtpname <%= a["smtpname"] %>
+pass   "<%= a["password"] %>"
+ssl
+sslfingerprint "<%= a["sslfprint"] %>"
+
+<% end %>

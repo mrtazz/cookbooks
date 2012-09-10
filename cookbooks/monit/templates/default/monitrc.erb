@@ -1,0 +1,79 @@
+# Start Monit in the background (run as a daemon):
+set daemon  60
+   with start delay 120
+
+# logfile to use
+set logfile /var/log/monit.log
+
+## Set the location of the Monit id file which stores the unique id for the
+## Monit instance. The id is generated and stored on first Monit start. By
+## default the file is placed in $HOME/.monit.id.
+set idfile /var/.monit.id
+
+## Set the location of the Monit state file which saves monitoring states
+set statefile /var/.monit.state
+
+## Set the list of mail servers for alert delivery. Multiple servers may be
+set mailserver localhost
+
+# By default Monit will drop alert events if no mail servers are available.
+# If you want to keep the alerts for later delivery retry, you can use the
+# EVENTQUEUE statement. The base directory where undelivered alerts will be
+# stored is specified by the BASEDIR option. You can limit the maximal queue
+# size using the SLOTS option (if omitted, the queue is limited by space
+# available in the back end filesystem).
+set eventqueue
+     basedir /var/monit  # set the base directory where events will be stored
+     slots 100           # optionally limit the queue size
+
+# Monit by default uses the following alert mail format:
+#
+# --8<--
+# From: monit@$HOST                         # sender
+# Subject: monit alert --  $EVENT $SERVICE  # subject
+#
+# $EVENT Service $SERVICE                   #
+#                                           #
+# 	Date:        $DATE                   #
+# 	Action:      $ACTION                 #
+# 	Host:        $HOST                   # body
+# 	Description: $DESCRIPTION            #
+#                                           #
+# Your faithful employee,                   #
+# Monit                                     #
+# --8<--
+#
+# You can override this message format or parts of it, such as subject
+# or sender using the MAIL-FORMAT statement. Macros such as $DATE, etc.
+# are expanded at runtime. For example, to override the sender, use:
+
+set mail-format { from: monit@<% @node[:hostname] %> }
+
+
+# You can set alert recipients whom will receive alerts if/when a
+# service defined in this file has errors. Alerts may be restricted on
+# events by using a filter as in the second example below.
+
+set alert root@<% @node[:hostname] %>
+
+# Monit has an embedded web server which can be used to view status of
+# services monitored and manage services from a web interface. See the
+# Monit Wiki if you want to enable SSL for the web server.
+
+set httpd port 2812 and
+   use address localhost  # only accept connection from localhost
+   allow localhost        # allow localhost to connect to the server and
+   <% for u in @users %>
+     allow <% u[:name] %>:<% u[:password] %>
+   <% end %>
+
+
+##############################################################################
+# Includes
+##############################################################################
+#
+# It is possible to include additional configuration parts from other files or
+# directories.
+
+include /usr/local/etc/monit.rc.d/*
+

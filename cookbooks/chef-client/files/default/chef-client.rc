@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# $FreeBSD$
+#
+# PROVIDE: chef
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# chef_enable (bool):Set to NO by default.
+#Set it to YES to enable chef-client.
+# chef_config (path):Set to /root/.chef/client.rb
+#by default.
+
+. /etc/rc.subr
+
+name=chef
+rcvar=chef_enable
+
+load_rc_config $name
+
+: ${chef_enable:="NO"}
+: ${chef_config="/root/.chef/client.rb"}
+
+pidfile=/var/run/${name}.pid
+
+command="/usr/local/bin/${name}-client"
+command_args="-d -i 600 -s 60 -P $pidfile -c $chef_config"
+
+run_rc_command "$1"

@@ -1,0 +1,45 @@
+# 2.0.16: /usr/local/etc/dovecot/dovecot.conf
+# OS: FreeBSD 9.0-RELEASE amd64  
+auth_mechanisms = plain login digest-md5 cram-md5
+auth_username_format = %Lu
+disable_plaintext_auth = no
+first_valid_gid = 1000
+first_valid_uid = 1000
+listen = *
+mail_location = maildir:~/Mails:INBOX=~/Mails/INBOX:LAYOUT=fs
+mail_privileged_group = mail
+passdb {
+  args = /var/db/dovecot.users
+  driver = passwd-file
+}
+protocols = imap
+service auth {
+  unix_listener auth-client {
+    mode = 0660
+  }
+  unix_listener auth-master {
+    mode = 0600
+  }
+  user = root
+}
+service imap-login {
+  inet_listener imap {
+    port = 0
+  }
+  inet_listener imaps {
+    port = 993
+  }
+}
+service pop3-login {
+  inet_listener pop3 {
+    port = 0
+  }
+}
+ssl = required
+ssl_cert = </usr/local/etc/ssl/certs/dovecot.pem
+ssl_key = </usr/local/etc/ssl/private/dovecot.key
+userdb {
+  args = blocking=yes
+  driver = passwd
+}
+verbose_proctitle = yes

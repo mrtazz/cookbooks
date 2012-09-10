@@ -1,0 +1,36 @@
+[core]
+  excludesfile = <%= @home %>/.gitignore
+  editor = <%= @editor %>
+  whitespace = trailing-space,space-before-tab
+
+[apply]
+  whitespace = fix
+
+[color]
+  ui = auto
+
+  interactive = true
+  status = true
+  branch = true
+  diff = true
+
+[alias]
+  st = status
+  lol = log --graph --decorate --pretty=oneline --abbrev-commit --all
+
+[merge]
+  tool = fugitive
+[mergetool "fugitive"]
+  cmd =fugitive mvim -f -c \"Gdiff\" \"$MERGED\"
+
+<% if @email && @fullname %>
+[user]
+  email = <%= @email %>
+  name  = <%= @fullname %>
+<% end %>
+
+<% if @github_user && @github_token %>
+[github]
+  user  = <%= @github_user %>
+  token = <%= @github_token %>
+<% end %>

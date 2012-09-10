@@ -1,0 +1,10 @@
+{
+  "checks": {
+    "httpd_check": {
+      "handler": "default",
+      "command": "/usr/local/etc/sensu/plugins/check-procs.rb -p httpd -C 1 ",
+      "interval": 60,
+      "subscribers": [ "servers" ]
+    }
+  }
+}

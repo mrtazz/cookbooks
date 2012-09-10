@@ -1,0 +1,8 @@
+chef_type:            role
+default_attributes:   {}
+description:          recipes for jenkins based CI
+env_run_lists:        {}
+json_class:           Chef::Role
+name:                 ci
+override_attributes:  {}
+run_list:             recipe[jenkins]

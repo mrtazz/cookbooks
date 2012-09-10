@@ -1,0 +1,23 @@
+= DESCRIPTION:
+Chef resource to provide easy installation of Mac OS X applications,
+distributed via zip archives.
+
+= REQUIREMENTS:
+
+= ATTRIBUTES:
+  - :app
+  - :source
+  - :destination
+  - :checksum
+  - :installed
+
+= USAGE:
+
+  osxzip_package "The Unarchiver" do
+    app "TheUnarchiver"
+    source "http://theunarchiver.googlecode.com/files/TheUnarchiver2.7.1.zip"
+    checksum "AFFEAFFE"
+  end
+
+
+

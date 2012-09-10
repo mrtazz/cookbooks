@@ -1,0 +1,58 @@
+#############################################################################
+# Global                                                                     #
+#----------------------------------------------------------------------------#
+# Global settings for the daemon.                                            #
+##############################################################################
+
+Hostname    "<%= node[:fqdn] %>"
+FQDNLookup   true
+BaseDir     "/var/db/collectd"
+PIDFile     "/var/run/collectd.pid"
+PluginDir   "/usr/local/lib/collectd"
+TypesDB     "/usr/local/share/collectd/types.db"
+Interval     <%= @interval || 60 %>
+Timeout      <%= @timeout || 2 %>
+ReadThreads  <%= @readthreads || 1 %>
+
+##############################################################################
+# Logging                                                                    #
+#----------------------------------------------------------------------------#
+# Plugins which provide logging functions should be loaded first, so log     #
+# messages generated when loading or configuring other plugins can be        #
+# accessed.                                                                  #
+##############################################################################
+LoadPlugin syslog
+
+## input plugins
+LoadPlugin cpu
+LoadPlugin memory
+LoadPlugin uptime
+LoadPlugin df
+
+
+## plugin configuration
+<LoadPlugin "python">
+  Globals true
+</LoadPlugin>
+
+<Plugin "python">
+  ModulePath "/usr/local/lib/collectd"
+  Import "collectd-librato"
+
+  <Module "collectd-librato">
+    APIToken "<%= @librato_token %>"
+    Email "<%= @librato_user %>"
+  </Module>
+</Plugin>
+
+# disk space
+<% node[:filesystem].each do |fs| -%>
+<Plugin "df">
+  Device "<%= fs[0] %>"
+  MountPoint "<%= fs[1][:mount] %>"
+  FSType "<%= fs[1][:fs_type] %>"
+  IgnoreSelected false
+  ReportReserved false
+  ReportInodes false
+</Plugin>
+<% end -%>

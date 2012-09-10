@@ -1,0 +1,33 @@
+#!/bin/sh
+
+. /etc/rc.subr
+
+name="sensu_<%= @part %>"
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+restart_cmd="${name}_restart"
+# files and dirs
+pidfile="/var/run/sensu-<%= @part %>.pid"
+logfile="/var/log/sensu/<%= @part %>.log"
+config="/usr/local/etc/sensu/conf.d/config.json"
+confdir="/usr/local/etc/sensu/conf.d"
+
+sensu_<%= @part %>_start()
+{
+  /usr/local/bin/sensu-<%= @part %> -v -b -c ${config} -d ${confdir} -l ${logfile} -p ${pidfile}
+}
+
+sensu_<%= @part %>_stop()
+{
+  kill -9 `cat ${pidfile}`
+}
+
+sensu_<%= @part %>_restart()
+{
+  sensu_<%= @part %>_stop
+  sleep 1
+  sensu_<%= @part %>_start
+}
+
+load_rc_config $name
+run_rc_command "$1"

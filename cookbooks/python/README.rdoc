@@ -1,0 +1,8 @@
+= DESCRIPTION:
+Installs/configures python with virtualenv for OSX
+
+= REQUIREMENTS:
+
+= ATTRIBUTES:
+
+= USAGE:
