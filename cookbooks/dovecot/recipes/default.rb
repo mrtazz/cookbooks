@@ -36,13 +36,15 @@ directory "/usr/local/etc/ssl/private" do
   recursive true
 end
 
+imapname = node[:imaphostname] || node['fqdn']
+
 script "generate ssl cert" do
   interpreter "sh"
   cwd "/root"
   code <<-EOH
   umask 077
   openssl genrsa 2048 > dovecot.key
-  openssl req -subj /C=US/ST=Several/L=Locality/O=Example/OU=Operations/CN=#{node['fqdn']}/emailAddress=root@#{node['fqdn']} \
+  openssl req -subj /C=US/ST=Several/L=Locality/O=Example/OU=Operations/CN=#{imapname}/emailAddress=root@#{node['fqdn']} \
 -new -x509 -nodes -sha1 -days 3650 -key dovecot.key > dovecot.crt
   cat dovecot.key dovecot.crt > dovecot.pem
   mv dovecot.pem /usr/local/etc/ssl/certs/dovecot.pem
