@@ -41,12 +41,17 @@ template "/usr/local/etc/rc.d/sensu_client" do
     variables(:part => "client")
 end
 
+subscriptions = ["servers"]
+
+
+node[:roles].each {|r| subscriptions << r }
+
 template '/usr/local/etc/sensu/conf.d/client.json' do
   source 'client.json.erb'
   owner 'root'
   group 'wheel'
   mode 0555
-  variables(:subscriptions => ["servers"])
+  variables(:subscriptions => subscriptions )
 end
 
 service 'sensu_client' do
