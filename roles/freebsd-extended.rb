@@ -4,6 +4,8 @@ run_list(
   "recipe[zsh]",
   "recipe[curl]",
   "recipe[htop]",
+  "recipe[ack]",
+  "recipe[elinks]",
   "recipe[mosh::freebsd]",
   "recipe[mutt::freebsd]",
   "recipe[weechat::freebsd]",
