@@ -1,0 +1,11 @@
+{
+  "checks": {
+    "chef_client_check": {
+      "handlers": ["librato", "irc"],
+      "command": "/usr/local/etc/sensu/plugins/check-procs.rb -p chef-client -C 1",
+      "interval": 60,
+      "refresh": 300,
+      "subscribers": [ "servers" ]
+    }
+  }
+}
