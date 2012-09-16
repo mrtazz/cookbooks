@@ -4,6 +4,7 @@
       "handlers": ["librato", "irc"],
       "command": "/usr/local/etc/sensu/plugins/check-procs.rb -p dovecot -C 1",
       "interval": 60,
+      "refresh": 300,
       "subscribers": [ "imapserver" ]
     }
   }

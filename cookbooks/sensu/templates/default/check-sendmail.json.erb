@@ -4,6 +4,7 @@
       "handlers": ["librato", "irc"],
       "command": "/usr/local/etc/sensu/plugins/check-procs.rb -p sendmail -C 1 -W 2 -c 10 -w 5",
       "interval": 60,
+      "refresh": 300,
       "subscribers": [ "servers" ]
     }
   }
