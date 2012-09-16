@@ -2,10 +2,6 @@
   "client": {
     "name": "<%= node[:fqdn] %>",
     "address": "<%= node[:ipaddress] %>",
-    "subscriptions": [ "test"
-    <% @subscriptions.each do |sub| -%>
-      ,"<%= sub %>"
-    <% end -%>
-    ]
+    "subscriptions": <%= @subscriptions %>
   }
 }

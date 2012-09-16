@@ -51,7 +51,7 @@ template '/usr/local/etc/sensu/conf.d/client.json' do
   owner 'root'
   group 'wheel'
   mode 0555
-  variables(:subscriptions => subscriptions )
+  variables(:subscriptions => subscriptions.to_json )
 end
 
 service 'sensu_client' do
