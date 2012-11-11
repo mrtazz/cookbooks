@@ -1,7 +1,7 @@
 {
   "checks": {
     "dovecot_check": {
-      "handlers": ["librato", "irc"],
+      "handlers": ["librato", "irc", "mail"],
       "command": "/usr/local/etc/sensu/plugins/check-procs.rb -p sbin/dovecot -C 1",
       "interval": 60,
       "refresh": 300,
