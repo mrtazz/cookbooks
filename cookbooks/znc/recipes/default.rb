@@ -6,3 +6,7 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+package "znc" do
+  action :install
+end
+

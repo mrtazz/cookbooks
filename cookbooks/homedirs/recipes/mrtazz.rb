@@ -135,7 +135,8 @@ if (File.exists?("/usr/local/bin/fetchmail") && (node[:mrtazz][:run_fetchmail] =
 
 end
 
-if (File.exists?("/usr/local/bin/znc") && (node[:mrtazz][:run_znc] == true))
+if (node.role? "ircbouncer")
+  include_recipe "znc"
 
   # znc stuff
   directory "#{homedir}/.znc" do
@@ -176,6 +177,7 @@ if (File.exists?("/usr/local/bin/znc") && (node[:mrtazz][:run_znc] == true))
               :mrtazz_ircnet_password => mrtazz_ircnet,
               :bitlbee_password => bitlbee_password
             )
+    not_if { File.exist? "#{homedir}/.znc/configs/znc.conf" }
 
   end
 
@@ -199,9 +201,31 @@ if (File.exists?("/usr/local/bin/znc") && (node[:mrtazz][:run_znc] == true))
     cwd "#{homedir}/.znc/modules"
     code <<-EOS
     curl https://raw.github.com/jreese/znc-push/master/push.cpp -sLO
-    znc-buildmod push.cpp
+    /usr/local/bin/znc-buildmod push.cpp
     EOS
     creates "#{homedir}/.znc/modules/push.so"
+  end
+
+  script "generate znc ssl cert" do
+    interpreter "sh"
+    cwd "#{homedir}/.znc"
+    code <<-EOH
+    umask 077
+    openssl genrsa 2048 > znc.key
+    openssl req -subj /C=US/ST=Several/L=Locality/O=Example/OU=Operations/CN=#{node[:fqdn]}/emailAddress=root@#{node['fqdn']} \
+  -new -x509 -nodes -sha1 -days 3650 -key znc.key > znc.crt
+    cat znc.key znc.crt > znc.pem
+    EOH
+    user "mrtazz"
+    group "mrtazz"
+    creates "#{homedir}/.znc/znc.pem"
+  end
+
+  cron "restart znc" do
+    user "mrtazz"
+    hour "*"
+    minute "*/10"
+    command "/usr/local/bin/znc >/dev/null 2>&1"
   end
 
 end
