@@ -11,5 +11,6 @@ run_list(
   "recipe[homedirs::mrtazz]",
   "recipe[sensu::client]",
   "recipe[sensu::chef-client]",
-  "recipe[sensu::server]"
+  "recipe[sensu::server]",
+  "recipe[security::freebsd]"
 )
