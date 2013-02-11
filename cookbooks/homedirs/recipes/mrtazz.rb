@@ -1,4 +1,13 @@
-homedir = "/home/mrtazz"
+if node[:platform] == "freebsd"
+  homedir = "/home/mrtazz"
+  mrtazz_group = "mrtazz"
+  secret_key_path = "/root/.chef/credentials-bag.key"
+elsif node[:platform] == "mac_os_x"
+  homedir = "/Users/mrtazz"
+  mrtazz_group = "staff"
+  secret_key_path = "#{homedir}/.chef/credentials-bag.key"
+end
+
 # dotfiles
 script "install_dotfiles" do
   interpreter "sh"
@@ -12,6 +21,16 @@ script "install_dotfiles" do
   not_if { File.exists? "#{homedir}/dotfiles" }
 end
 
+script "install_bin" do
+  interpreter "sh"
+  user "mrtazz"
+  cwd homedir
+  code <<-EOH
+  git clone https://github.com/mrtazz/bin.git
+  EOH
+  not_if { File.exists? "#{homedir}/bin" }
+end
+
 # vimfiles
 script "install_vimfiles" do
   interpreter "sh"
@@ -22,6 +41,7 @@ script "install_vimfiles" do
   EOH
   not_if { File.exists? "#{homedir}/.vim" }
 end
+
 link "#{homedir}/.vimrc" do
     to "#{homedir}/.vim/vimrc"
 end
@@ -44,18 +64,18 @@ end
 directory "#{homedir}/.ssh" do
   action :create
   owner "mrtazz"
-  group "mrtazz"
+  group mrtazz_group
   mode "0755"
 end
 
-secret = Chef::EncryptedDataBagItem.load_secret("/root/.chef/credentials-bag.key")
+secret = Chef::EncryptedDataBagItem.load_secret(secret_key_path)
 creds = Chef::EncryptedDataBagItem.load("credentials", "mrtazz", secret)
 keys = creds["authorized_keys"]
 
 template "#{homedir}/.ssh/authorized_keys" do
   source "mrtazz/authorized_keys.erb"
   owner "mrtazz"
-  group "mrtazz"
+  group mrtazz_group
   mode "0644"
   variables( :keys => keys )
 end
@@ -73,7 +93,7 @@ end
 directory "#{homedir}/bin" do
   action :create
   owner "mrtazz"
-  group "mrtazz"
+  group mrtazz_group
   mode "0755"
 end
 
@@ -95,21 +115,21 @@ bitlbee_password = creds["bitlbee"]["password"]
 directory "#{homedir}/Mails" do
   action :create
   owner "mrtazz"
-  group "mrtazz"
+  group mrtazz_group
   mode "0700"
 end
 
 template "#{homedir}/.procmailrc" do
   source "mrtazz/procmailrc.erb"
   owner "mrtazz"
-  group "mrtazz"
+  group mrtazz_group
   mode "0600"
 end
 
 template "#{homedir}/.forward" do
   source "mrtazz/forward.erb"
   owner "mrtazz"
-  group "mrtazz"
+  group mrtazz_group
   mode "0600"
   only_if { File.exists? "/usr/local/bin/procmail" }
 end
@@ -121,7 +141,7 @@ if (File.exists?("/usr/local/bin/fetchmail") && (node[:mrtazz][:run_fetchmail] =
   template "#{homedir}/.fetchmailrc" do
     source "mrtazz/fetchmailrc.erb"
     owner "mrtazz"
-    group "mrtazz"
+    group mrtazz_group
     mode "0600"
     variables( :accounts => fetchmailaccounts )
   end
@@ -130,7 +150,7 @@ if (File.exists?("/usr/local/bin/fetchmail") && (node[:mrtazz][:run_fetchmail] =
     user "mrtazz"
     hour "*"
     minute "*/5"
-    command "/usr/local/bin/fetchmail -as"
+    command "/usr/local/bin/fetchmail -as >/dev/null 2>&1"
   end
 
 end
@@ -142,7 +162,7 @@ if (node.role? "ircbouncer")
   directory "#{homedir}/.znc" do
     action :create
     owner "mrtazz"
-    group "mrtazz"
+    group mrtazz_group
     mode "0700"
   end
 
@@ -150,14 +170,14 @@ if (node.role? "ircbouncer")
   directory "#{homedir}/.znc/modules" do
     action :create
     owner "mrtazz"
-    group "mrtazz"
+    group mrtazz_group
     mode "0700"
   end
 
   directory "#{homedir}/.znc/configs" do
     action :create
     owner "mrtazz"
-    group "mrtazz"
+    group mrtazz_group
     mode "0700"
   end
 
@@ -169,7 +189,7 @@ if (node.role? "ircbouncer")
   template "#{homedir}/.znc/configs/znc.conf" do
     source "mrtazz/znc.conf.erb"
     owner "mrtazz"
-    group "mrtazz"
+    group mrtazz_group
     mode "0700"
     variables( :homedir => homedir, :mrtazz_password => mrtazz,
               :mrtazz_im_password => mrtazz_im,
@@ -188,7 +208,7 @@ if (node.role? "ircbouncer")
       directory "#{homedir}/.znc/users/#{z[0]}/#{m}" do
         action :create
         owner "mrtazz"
-        group "mrtazz"
+        group mrtazz_group
         mode "0700"
         recursive true
       end
@@ -217,7 +237,7 @@ if (node.role? "ircbouncer")
     cat znc.key znc.crt > znc.pem
     EOH
     user "mrtazz"
-    group "mrtazz"
+    group mrtazz_group
     creates "#{homedir}/.znc/znc.pem"
   end
 
