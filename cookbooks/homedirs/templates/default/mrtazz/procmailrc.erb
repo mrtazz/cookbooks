@@ -1,1 +1,9 @@
 DEFAULT=$HOME/Mails/INBOX/
+
+<% @spams.each do |address| %>
+
+:0:
+* ^(Cc|To).*<%= address %>
+$HOME/Mails/Junk/
+
+<% end %>

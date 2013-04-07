@@ -121,11 +121,15 @@ directory "#{homedir}/Mails" do
   mode "0700"
 end
 
+mrtazz_data_bag = data_bag_item('users', 'mrtazz')
+spams = mrtazz_data_bag["spamaddresses"]
+
 template "#{homedir}/.procmailrc" do
   source "mrtazz/procmailrc.erb"
   owner "mrtazz"
   group mrtazz_group
   mode "0600"
+  variables({ :spams => spams })
 end
 
 template "#{homedir}/.forward" do
