@@ -80,14 +80,16 @@ template "#{homedir}/.ssh/authorized_keys" do
   variables( :keys => keys )
 end
 
-script "oh-my-zsh install from github" do
+script "install zshfiles from github" do
   interpreter "sh"
   user "mrtazz"
   cwd homedir
   code <<-EOS
-  git clone git://github.com/robbyrussell/oh-my-zsh.git .oh-my-zsh
+  git clone git://github.com/mrtazz/zshfiles.git .zsh
+  cd .zsh
+  make install
   EOS
-  not_if { File.directory? "#{homedir}/.oh-my-zsh" }
+  not_if { File.directory? "#{homedir}/.zsh" }
 end
 
 directory "#{homedir}/bin" do
