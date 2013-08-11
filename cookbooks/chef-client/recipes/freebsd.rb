@@ -13,11 +13,6 @@ gem_package "knife-lastrun" do
   action :install
 end
 
-secret = Chef::EncryptedDataBagItem.load_secret("/root/.chef/credentials-bag.key")
-grove_creds = Chef::EncryptedDataBagItem.load("credentials", "grove", secret)
-nick = grove_creds["nickname"]
-password = grove_creds["password"]
-
 service "chef_client" do
   supports [:start, :stop, :restart]
   action :enable
@@ -36,9 +31,7 @@ template "/root/.chef/client.rb" do
   mode 0644
   owner "root"
   group "wheel"
-  variables ({ :chefbasedir => '/root/.chef',
-               :nickname => nick,
-               :ircpassword => password})
+  variables ({ :chefbasedir => '/root/.chef' })
   notifies :create, "ruby_block[reload_client_config]"
 end
 
