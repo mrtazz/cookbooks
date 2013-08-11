@@ -2,7 +2,7 @@
   "checks": {
     "sendmail_check": {
       "handlers": ["librato", "irc", "mail"],
-      "command": "/usr/local/etc/sensu/plugins/check-procs.rb -p sendmail -C 1 -W 2 -c 10 -w 8",
+      "command": "/usr/local/etc/sensu/plugins/check-procs.rb -p sendmail -C 1 -W 2",
       "interval": 60,
       "refresh": 300,
       "subscribers": [ "servers" ]
