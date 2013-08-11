@@ -123,13 +123,14 @@ end
 
 mrtazz_data_bag = data_bag_item('users', 'mrtazz')
 spams = mrtazz_data_bag["spamaddresses"]
+maillists = mrtazz_data_bag["maillists"]
 
 template "#{homedir}/.procmailrc" do
   source "mrtazz/procmailrc.erb"
   owner "mrtazz"
   group mrtazz_group
   mode "0600"
-  variables({ :spams => spams })
+  variables({ :spams => spams, :maillists => maillists })
 end
 
 template "#{homedir}/.forward" do

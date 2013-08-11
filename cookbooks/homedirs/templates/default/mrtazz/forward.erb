@@ -1,1 +1,5 @@
+<% if node.role? "mailserver" %>
 "|exec /usr/local/bin/procmail || exit 75"
+<% else %>
+mrtazz@me.com
+<% end %>

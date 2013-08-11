@@ -1,4 +1,5 @@
 DEFAULT=$HOME/Mails/INBOX/
+LOGFILE=$HOME/log/procmail.log
 
 <% @spams.each do |address| %>
 
@@ -7,3 +8,12 @@ DEFAULT=$HOME/Mails/INBOX/
 $HOME/Mails/Junk/
 
 <% end %>
+
+<% @maillists.each do |list| %>
+
+:0:
+* ^(Cc|To).*<%= list["address"] %>
+$HOME/Mails/<%= list["name"] %>/
+
+<% end %>
+

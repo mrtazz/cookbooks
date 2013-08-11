@@ -10,6 +10,36 @@
     "schauenbergd@unwiredcouch.com",
     "ale61@lordofhosts.de",
     "info@lordofhosts.de",
-    "groupon@lordofhosts.de"
-  ]
+    "groupon@lordofhosts.de",
+    "longqisona93@lordofhosts.de",
+    "www@mrtazz.com"
+  ],
+  "maillists": [
+  {"name": "logstash",
+   "address": "logstash-users@googlegroups.com"},
+  {"name": "devops",
+   "address": "devops@googlegroups.com"},
+  {"name": "riak",
+   "address": "riak-users@lists.basho.com"},
+  {"name": "riak",
+   "address": "riak-core@lists.basho.com"},
+  {"name": "distsys",
+   "address": "distsys-discuss@googlegroups.com"},
+  {"name": "graphite",
+   "address": "graphite-dev@lists.launchpad.net"},
+  {"name": "sensu",
+   "address": "sensu-users@googlegroups.com"},
+  {"name": "chef",
+   "address": "chef@lists.opscode.com"},
+  {"name": "denog",
+   "address": "denog@lists.denog.de"},
+  {"name": "github",
+   "address": "@noreply.github.com"},
+  {"name": "opsschool",
+   "address": "discuss@opsschool.org"},
+  {"name": "travis-ci",
+   "address": "travis-ci@googlegroups.com"},
+  {"name": "riemann",
+   "address": "riemann-users@googlegroups.com"}
+    ]
 }
