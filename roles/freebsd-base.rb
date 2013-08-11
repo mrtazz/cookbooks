@@ -12,5 +12,6 @@ run_list(
   "recipe[sensu::client]",
   "recipe[sensu::chef-client]",
   "recipe[sensu::server]",
-  "recipe[security::freebsd]"
+  "recipe[security::freebsd]",
+  "recipe[system::freebsd]"
 )

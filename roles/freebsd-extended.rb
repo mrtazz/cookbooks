@@ -4,7 +4,7 @@ run_list(
   "recipe[zsh]",
   "recipe[curl]",
   "recipe[htop]",
-  "recipe[ack]",
+  "recipe[rsync]",
   "recipe[elinks]",
   "recipe[mosh::freebsd]",
   "recipe[mutt::freebsd]",
