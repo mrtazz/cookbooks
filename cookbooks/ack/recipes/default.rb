@@ -1,3 +1,3 @@
-package 'ack' do
+package 'p5-ack' do
   action :install
 end
