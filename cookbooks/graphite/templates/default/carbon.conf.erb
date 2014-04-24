@@ -1,0 +1,80 @@
+[cache]
+GRAPHITE_ROOT        = /storage/graphite
+GRAPHITE_CONF_DIR    = /usr/local/etc/carbon
+GRAPHITE_STORAGE_DIR = /storage/graphite/storage/
+STORAGE_DIR          = /storage/graphite/storage/
+LOCAL_DATA_DIR       = /storage/graphite/storage/whisper/
+CONF_DIR             = /usr/local/etc/carbon
+LOG_DIR              = /storage/graphite/storage/log/
+PID_DIR              = /var/run
+
+# Specify the user to drop privileges to
+# If this is blank carbon runs as the user that invokes it
+# This user must have write access to the local data directory
+USER =
+
+# Limit the size of the cache to avoid swapping or becoming CPU bound.
+# Sorts and serving cache queries gets more expensive as the cache grows.
+# Use the value "inf" (infinity) for an unlimited cache size.
+# value should be an integer number of metric datapoints.
+MAX_CACHE_SIZE = inf
+
+# Limits the number of whisper update_many() calls per second, which effectively
+# means the number of write requests sent to the disk. This is intended to
+# prevent over-utilizing the disk and thus starving the rest of the system.
+# When the rate of required updates exceeds this, then carbon's caching will
+# take effect and increase the overall throughput accordingly.
+MAX_UPDATES_PER_SECOND = 500
+
+# If defined, this changes the MAX_UPDATES_PER_SECOND in Carbon when a
+# stop/shutdown is initiated.  This helps when MAX_UPDATES_PER_SECOND is
+# relatively low and carbon has cached a lot of updates; it enables the carbon
+# daemon to shutdown more quickly.
+# MAX_UPDATES_PER_SECOND_ON_SHUTDOWN = 1000
+
+# Softly limits the number of whisper files that get created each minute.
+# Setting this value low (like at 50) is a good way to ensure your graphite
+# system will not be adversely impacted when a bunch of new metrics are
+# sent to it. The trade off is that it will take much longer for those metrics'
+# database files to all get created and thus longer until the data becomes usable.
+# Setting this value high (like "inf" for infinity) will cause graphite to create
+# the files quickly but at the risk of slowing I/O down considerably for a while.
+MAX_CREATES_PER_MINUTE = 50
+
+LINE_RECEIVER_INTERFACE = 0.0.0.0
+LINE_RECEIVER_PORT = 2003
+
+# Set this to True to enable the UDP listener. By default this is off
+# because it is very common to run multiple carbon daemons and managing
+# another (rarely used) port for every carbon instance is not fun.
+ENABLE_UDP_LISTENER = False
+UDP_RECEIVER_INTERFACE = 0.0.0.0
+UDP_RECEIVER_PORT = 2003
+
+PICKLE_RECEIVER_INTERFACE = 0.0.0.0
+PICKLE_RECEIVER_PORT = 2004
+
+# Per security concerns outlined in Bug #817247 the pickle receiver
+# will use a more secure and slightly less efficient unpickler.
+# Set this to True to revert to the old-fashioned insecure unpickler.
+USE_INSECURE_UNPICKLER = False
+
+CACHE_QUERY_INTERFACE = 0.0.0.0
+CACHE_QUERY_PORT = 7002
+
+# Set this to False to drop datapoints received after the cache
+# reaches MAX_CACHE_SIZE. If this is True (the default) then sockets
+# over which metrics are received will temporarily stop accepting
+# data until the cache size falls below 95% MAX_CACHE_SIZE.
+USE_FLOW_CONTROL = True
+
+# By default, carbon-cache will log every whisper update and cache hit. This can be excessive and
+# degrade performance if logging on the same volume as the whisper data is stored.
+LOG_UPDATES = False
+LOG_CACHE_HITS = False
+
+# On some systems it is desirable for whisper to write synchronously.
+# Set this option to True if you'd like to try this. Basically it will
+# shift the onus of buffering writes from the kernel into carbon's cache.
+WHISPER_AUTOFLUSH = False
+
