@@ -13,6 +13,8 @@ gem_package "knife-lastrun" do
   action :install
 end
 
+node.default["chef_client"]["conf_dir"] = "/root/.chef/"
+
 service "chef_client" do
   supports [:start, :stop, :restart]
   action :enable

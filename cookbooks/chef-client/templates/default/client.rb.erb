@@ -3,7 +3,7 @@ node_name        '<%= node[:fqdn] %>'
 chef_server_url  'https://api.opscode.com/organizations/unwiredcouch'
 validation_client_name 'unwiredcouch-validator'
 # Paths
-base_dir = "<%= @chefbasedir %>"
+base_dir = "<%= node["chef_client"]["conf_dir"] %>"
 client_key "#{base_dir}/<%= node[:hostname] %>.pem"
 run_path "#{base_dir}/run"
 checksum_path "#{base_dir}/checksum"
@@ -19,6 +19,10 @@ verbose_logging false
 
 Logger::Syslog.class_eval do
   attr_accessor :sync, :formatter
+  def write(msg)
+  end
+  def close
+  end
 end
 log_location Logger::Syslog.new("chef-client")
 
