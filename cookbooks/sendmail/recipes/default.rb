@@ -6,3 +6,7 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+service "sendmail" do
+  supports [:start, :stop, :restart]
+  action :enable
+end
