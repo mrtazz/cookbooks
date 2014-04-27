@@ -44,7 +44,7 @@ template "#{plugindir}/check_smartmon.sh" do
   source "checks/check_smartmon.sh.erb"
   owner "root"
   group "wheel"
-  mode 0755
+  mode 0555
   variables( :disks => node_nagiosconfig[:disks] || []  )
 end
 

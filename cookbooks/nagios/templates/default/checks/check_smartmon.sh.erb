@@ -6,7 +6,7 @@ EXITCODE=0
 DISKS="<%= @disks.join(" ") %>"
 
 for disk in ${DISKS}; do
-  status=`sudo /usr/local/libexec/nagios/check_smartmon -d /dev/${disk}`
+  status=`/usr/local/bin/sudo /usr/local/libexec/nagios/check_smartmon -d /dev/${disk}`
   if [ $? != 0 ]; then
     echo ${status}
     EXITCODE=2
