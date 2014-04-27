@@ -1,5 +1,7 @@
 <% if node.role? "mailserver" %>
 "|exec /usr/local/bin/procmail || exit 75"
+<% elsif node[:ip_address] != node[:public_ip] %>
+d@lordofhosts.de
 <% else %>
 mrtazz@me.com
 <% end %>

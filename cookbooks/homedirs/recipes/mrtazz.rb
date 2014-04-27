@@ -208,7 +208,7 @@ if (node.role? "ircbouncer")
 
   end
 
-  modules = ["away", "bouncedcc", "keepnick", "log", "nickserv", "push"]
+  modules = ["away", "bouncedcc", "keepnick", "log", "nickserv", "push", "palaver"]
 
   creds["znc"].each do |z|
     modules.each do |m|
@@ -231,6 +231,17 @@ if (node.role? "ircbouncer")
     /usr/local/bin/znc-buildmod push.cpp
     EOS
     creates "#{homedir}/.znc/modules/push.so"
+  end
+
+  script "install znc palaver module" do
+    interpreter "sh"
+    user "mrtazz"
+    cwd "#{homedir}/.znc/modules"
+    code <<-EOS
+    curl https://raw.github.com/Palaver/znc-palaver/master/palaver.cpp -sLO
+    /usr/local/bin/znc-buildmod palaver.cpp
+    EOS
+    creates "#{homedir}/.znc/modules/palaver.so"
   end
 
   script "generate znc ssl cert" do
