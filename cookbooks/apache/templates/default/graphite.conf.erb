@@ -1,0 +1,50 @@
+<IfModule !wsgi_module.c>
+    LoadModule wsgi_module libexec/apache22/mod_wsgi.so
+</IfModule>
+
+# XXX You need to set this up!
+# Read http://code.google.com/p/modwsgi/wiki/ConfigurationDirectives#WSGISocketPrefix
+WSGISocketPrefix run/wsgi
+
+<VirtualHost *:443>
+  ServerName <%= @hostname %>
+  ServerAlias <%= node[:fqdn] %>
+  SSLEngine On
+  SSLCertificateFile "/usr/local/etc/apache22/ssl.cert"
+  SSLCertificateKeyFile "/usr/local/etc/apache22/ssl.key"
+  ErrorLog /var/log/httpd/<%= @hostname %>-error.log
+  CustomLog /var/log/httpd/<%= @hostname %>-access.log common
+  DocumentRoot "<%= @graphite_root %>"
+
+  # I've found that an equal number of processes & threads tends
+  # to show the best performance for Graphite (ymmv).
+  WSGIDaemonProcess graphite processes=5 threads=5 display-name='%{GROUP}' inactivity-timeout=120
+  WSGIProcessGroup graphite
+  WSGIApplicationGroup %{GLOBAL}
+  WSGIImportScript <%= @wsgi_path %>/graphite.wsgi process-group=graphite application-group=%{GLOBAL}
+
+  # XXX You will need to create this file! There is a graphite.wsgi.example
+  # file in this directory that you can safely use, just copy it to graphite.wgsi
+  WSGIScriptAlias / <%= @wsgi_file %>/graphite.wsgi
+
+  Alias /content/ <%= @graphite_root %>/content/
+  <Location "/content/">
+          SetHandler None
+  </Location>
+
+  # XXX In order for the django admin site media to work you
+  # must change @DJANGO_ROOT@ to be the path to your django
+  # installation, which is probably something like:
+  # /usr/lib/python2.6/site-packages/django
+  Alias /media/ "<%= @django_root %>/contrib/admin/media/"
+  <Location "/media/">
+          SetHandler None
+  </Location>
+
+  # The graphite.wsgi file has to be accessible by apache. It won't
+  # be visible to clients because of the DocumentRoot though.
+  <Directory <%= @wsgi_path %>>
+          Order deny,allow
+          Allow from all
+  </Directory>
+</VirtualHost>

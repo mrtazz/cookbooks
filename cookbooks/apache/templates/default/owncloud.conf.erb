@@ -1,0 +1,81 @@
+<VirtualHost *:80>
+    ServerName <%= @hostname %>
+    ServerAlias <%= node[:fqdn] %>
+    <IfModule mod_rewrite.c>
+      RewriteEngine On
+      RewriteCond %{HTTPS} off
+      RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+    </IfModule>
+</VirtualHost>
+<VirtualHost *:443>
+    ServerName <%= @hostname %>
+    ServerAlias <%= node[:fqdn] %>
+    SSLEngine On
+    SSLCertificateFile "/usr/local/etc/apache22/ssl.cert"
+    SSLCertificateKeyFile "/usr/local/etc/apache22/ssl.key"
+
+    DocumentRoot <%= @docroot %>
+    <Directory "<%= @docroot %>">
+      Options None
+      Options +FollowSymlinks
+      AllowOverride All
+      Order allow,deny
+      Allow from all
+    </Directory>
+
+  CustomLog /var/log/httpd/<%= @hostname %>-access.log combined
+  ErrorLog /var/log/httpd/<%= @hostname %>-error.log
+
+</VirtualHost>
+
+
+# This line also needs to be in your server's config.
+# LoadModule wsgi_module modules/mod_wsgi.so
+
+<IfModule !wsgi_module.c>
+    LoadModule wsgi_module modules/mod_wsgi.so
+</IfModule>
+
+# XXX You need to set this up!
+# Read http://code.google.com/p/modwsgi/wiki/ConfigurationDirectives#WSGISocketPrefix
+WSGISocketPrefix run/wsgi
+
+<VirtualHost *:80>
+        ServerName graphite
+        DocumentRoot "/opt/graphite/webapp"
+        ErrorLog /opt/graphite/storage/log/webapp/error.log
+        CustomLog /opt/graphite/storage/log/webapp/access.log common
+
+        # I've found that an equal number of processes & threads tends
+        # to show the best performance for Graphite (ymmv).
+        WSGIDaemonProcess graphite processes=5 threads=5 display-name='%{GROUP}' inactivity-timeout=120
+        WSGIProcessGroup graphite
+        WSGIApplicationGroup %{GLOBAL}
+        WSGIImportScript /opt/graphite/conf/graphite.wsgi process-group=graphite application-group=%{GLOBAL}
+
+        # XXX You will need to create this file! There is a graphite.wsgi.example
+        # file in this directory that you can safely use, just copy it to graphite.wgsi
+        WSGIScriptAlias / /opt/graphite/conf/graphite.wsgi
+
+        Alias /content/ /opt/graphite/webapp/content/
+        <Location "/content/">
+                SetHandler None
+        </Location>
+
+        # XXX In order for the django admin site media to work you
+        # must change @DJANGO_ROOT@ to be the path to your django
+        # installation, which is probably something like:
+        # /usr/lib/python2.6/site-packages/django
+        Alias /media/ "@DJANGO_ROOT@/contrib/admin/media/"
+        <Location "/media/">
+                SetHandler None
+        </Location>
+
+        # The graphite.wsgi file has to be accessible by apache. It won't
+        # be visible to clients because of the DocumentRoot though.
+        <Directory /opt/graphite/conf/>
+                Order deny,allow
+                Allow from all
+        </Directory>
+
+</VirtualHost>

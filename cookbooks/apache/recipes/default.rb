@@ -13,3 +13,10 @@ end
 service "apache22" do
   action :enable
 end
+
+directory "/var/log/httpd/" do
+  action :create
+  owner "root"
+  group "wheel"
+  mode 0755
+end
