@@ -31,18 +31,30 @@ LoadPlugin df
 
 
 ## plugin configuration
-<LoadPlugin "python">
-  Globals true
-</LoadPlugin>
+#<LoadPlugin "python">
+#  Globals true
+#</LoadPlugin>
+#
+#<Plugin "python">
+#  ModulePath "/usr/local/lib/collectd"
+#  Import "collectd-librato"
+#
+#  <Module "collectd-librato">
+#    APIToken "<%= @librato_token %>"
+#    Email "<%= @librato_user %>"
+#  </Module>
+#</Plugin>
 
-<Plugin "python">
-  ModulePath "/usr/local/lib/collectd"
-  Import "collectd-librato"
-
-  <Module "collectd-librato">
-    APIToken "<%= @librato_token %>"
-    Email "<%= @librato_user %>"
-  </Module>
+# send to graphite
+LoadPlugin write_graphite
+<Plugin write_graphite>
+  <Node "unwiredcouch">
+    Host "<%= @graphite_host || "graphite.unwiredcouch.com" %>"
+    Port "2003"
+    Protocol "tcp"
+    LogSendErrors true
+    Prefix "collectd."
+  </Node>
 </Plugin>
 
 # disk space

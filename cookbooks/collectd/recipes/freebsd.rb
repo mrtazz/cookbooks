@@ -1,13 +1,6 @@
 package "python27"
 
-script "install collectd" do
-  interpreter "sh"
-  cwd "/usr/ports/net-mgmt/collectd5"
-  code <<-EOS
-  make -DBATCH -DWITH_PYTHON -DWITHOUT_RRDTOOL -DWITHOUT_RRDCACHED install clean
-  EOS
-  not_if { File.exists? "/usr/local/sbin/collectd" }
-end
+package "collectd5"
 
 template "/usr/local/lib/collectd/collectd-librato.py" do
   source "collectd-librato.py.erb"
