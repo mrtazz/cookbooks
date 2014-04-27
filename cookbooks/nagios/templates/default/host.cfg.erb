@@ -1,0 +1,9 @@
+define host{
+        use                     freebsd-server
+        host_name               <%= @server[:name] %>
+        alias                   <%= @server[:fqdn] %>
+        address                 <%= @server[:ip] %>
+        <% unless @server[:hostgroups].empty? %>
+        hostgroups              <%= @server[:hostgroups].join(",") %>
+        <% end %>
+        }

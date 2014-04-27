@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# nagios script to check smartmon status of multiple disks
+
+EXITCODE=0
+DISKS="<%= @disks.join(" ") %>"
+
+for disk in ${DISKS}; do
+  status=`sudo /usr/local/libexec/nagios/check_smartmon -d /dev/${disk}`
+  if [ $? != 0 ]; then
+    echo ${status}
+    EXITCODE=2
+  fi
+done
+
+if [ ${EXITCODE} == 0 ]; then
+  echo "Disks: ${DISKS} are ok."
+fi
+
+exit ${EXITCODE}

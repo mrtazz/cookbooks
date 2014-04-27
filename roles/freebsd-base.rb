@@ -9,10 +9,11 @@ run_list(
   "recipe[tmux]",
   "recipe[git::freebsd]",
   "recipe[homedirs::mrtazz]",
-  "recipe[sensu::client]",
-  "recipe[sensu::chef-client]",
-  "recipe[sensu::server]",
+  "recipe[sudo]",
+  "recipe[nagios::nrpe]",
   "recipe[security::freebsd]",
   "recipe[system::freebsd]",
-  "recipe[cron::freebsd]"
+  "recipe[cron::freebsd]",
+  "recipe[sendmail::default]",
+  "recipe[ohai-public_ip]"
 )

@@ -9,6 +9,5 @@ default_attributes :mail_domains => [
  ["hoogy58.de", "mrtazz"]
 ]
 run_list(
-  "recipe[sensu::mailserver]",
   "recipe[sendmail::freebsd]"
 )

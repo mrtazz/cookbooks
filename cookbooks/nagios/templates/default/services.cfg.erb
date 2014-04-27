@@ -1,0 +1,184 @@
+# Define a host for the local machine
+## services
+define service{
+    use                             local-service
+    hostgroup_name                  freebsd-base
+    service_description             PING
+    check_command			              check_ping!200.0,20%!500.0,60%
+}
+
+
+# Define a service to check the disk space of the root partition
+# on the local machine.  Warning if < 20% free, critical if
+# < 10% free space on partition.
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  freebsd-base
+        service_description             Root Partition
+	      check_command			              check_nrpe!check_root
+        }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  freebsd-base
+        service_description             vulnerable packages
+	      check_command			              check_nrpe!check_portaudit
+        }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  freebsd-base
+        service_description             zpool status
+	      check_command			              check_nrpe!check_zpool
+        }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  freebsd-base
+        service_description             chef-client
+	      check_command			              check_nrpe!check_chef
+        }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  freebsd-base
+        service_description             disk smartmon health
+	      check_command			              check_nrpe!check_smartmon
+        }
+
+
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  backup
+        service_description             backup snapshot age
+	      check_command			              check_nrpe!check_snapshots
+        }
+
+# Define a service to check the number of currently logged in
+# users on the local machine.  Warning if > 20 users, critical
+# if > 50 users.
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       localhost
+        service_description             Current Users
+	      check_command			check_local_users!2!3
+        }
+
+
+# Define a service to check the number of currently running procs
+# on the local machine.  Warning if > 250 processes, critical if
+# > 400 users.
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  freebsd-base
+        service_description             Total Processes
+	      check_command	                  check_nrpe!check_total_procs
+        }
+
+
+
+# Define a service to check the load on the local machine.
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       localhost
+        service_description             Current Load
+        check_command			check_local_load!5.0,4.0,3.0!10.0,6.0,4.0
+        }
+
+
+
+# Define a service to check the swap usage the local machine.
+# Critical if less than 10% of swap is free, warning if less than 20% is free
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       localhost
+        service_description             Swap Usage
+        check_command			check_local_swap!20!10
+        }
+
+
+
+# Define a service to check SSH on the local machine.
+# Disable notifications for this service by default, as not all users may have SSH enabled.
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  freebsd-base
+        service_description             SSH
+        check_command			check_ssh
+        }
+
+
+
+# Define a service to check HTTP on the local machine.
+# Disable notifications for this service by default, as not all users may have HTTP enabled.
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       localhost
+        service_description             HTTP
+        check_command			check_http
+        notifications_enabled		0
+        }
+
+define service{
+        use		local-service		; Inherit default values from a template
+        hostgroup_name         freebsd-base
+        service_description	SMTP
+        check_command	check_smtp
+	}
+
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  imapserver
+        service_description             IMAP
+        check_command			check_imap
+        }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  ircbouncer
+        service_description             znc bouncer
+        check_command			check_tcp!33333
+        }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       localhost
+        service_description             owncloud HTTP
+        check_command			check_http_remote!owncloud.unwiredcouch.com
+        }
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       localhost
+        service_description             owncloud HTTPS
+        check_command			check_https_remote!owncloud.unwiredcouch.com
+        }
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       localhost
+        service_description             redis URL shortener
+        check_command			check_tcp_remote!catfish.redistogo.com!9424
+        }
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  owncloud
+        service_description             HTTPS
+        check_command			check_https!owncloud.unwiredcouch.com
+        }
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  owncloud
+        service_description             HTTP
+        check_command			check_http!owncloud.unwiredcouch.com
+        }
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       localhost
+        service_description             mrtz.cc
+        check_command			check_http_remote!mrtz.cc
+        }
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       localhost
+        service_description             blog
+        check_command			check_http_remote!www.unwiredcouch.com
+        }

@@ -1,0 +1,28 @@
+define contact{
+        contact_name  mrtazz    ; Short name of user
+        use           generic-contact   ; Inherit default values from generic-contact template (defined above)
+        alias         Daniel    ; Full name of user
+        email         d@unwiredcouch.com  ; <<***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
+        }
+
+define contact{
+        contact_name  mrtazz_pushover   ; Short name of user
+        use           generic-pushover-contact    ; Inherit default values from generic-contact template (defined above)
+        alias         Daniel    ; Full name of user
+        email         <%= @mrtazz_pushover_id %>  ; <<***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
+        }
+
+define contact{
+        contact_name  opsgenie    ; Short name of user
+        use           generic-contact   ; Inherit default values from generic-contact template (defined above)
+        alias         Opsgenie contact    ; Full name of user
+        email         d@unwiredcouch.com  ; <<***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
+        service_notification_commands notify-service-opsgenie
+        host_notification_commands notify-host-opsgenie
+        }
+
+define contactgroup{
+        contactgroup_name       admins
+        alias                   Nagios Administrators
+        members                 mrtazz,mrtazz_pushover,opsgenie
+        }

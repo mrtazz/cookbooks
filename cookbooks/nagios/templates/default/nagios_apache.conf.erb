@@ -1,0 +1,26 @@
+<VirtualHost *:443>
+    ServerName nagios.unwiredcouch.com
+    SSLEngine On
+    SSLCertificateFile "/usr/local/etc/apache22/ssl.cert"
+    SSLCertificateKeyFile "/usr/local/etc/apache22/ssl.key"
+
+    DocumentRoot /usr/local/www/nagios
+    <Directory /usr/local/www/nagios>
+      Order deny,allow
+      Deny from all
+      php_flag engine on
+      php_admin_value open_basedir /usr/local/www/nagios/:/var/spool/nagios/
+      AuthUserFile /usr/local/etc/nagios/htpasswd.users
+      AuthName "Nagios Auth"
+      AuthType Basic
+      Satisfy Any
+      require valid-user
+    </Directory>
+
+    <Directory /usr/local/www/nagios/cgi-bin>
+      Options ExecCGI
+    </Directory>
+
+    ScriptAlias /nagios/cgi-bin/ /usr/local/www/nagios/cgi-bin/
+    Alias /nagios /usr/local/www/nagios
+</VirtualHost>
