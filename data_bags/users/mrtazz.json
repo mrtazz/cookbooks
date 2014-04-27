@@ -33,6 +33,8 @@
    "address": "chef@lists.opscode.com"},
   {"name": "denog",
    "address": "denog@lists.denog.de"},
+  {"name": "nanog",
+   "address": "nanog@nanog.org"},
   {"name": "github",
    "address": "@noreply.github.com"},
   {"name": "opsschool",
