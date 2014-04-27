@@ -7,7 +7,7 @@ run_list(
   "recipe[sysctl::freebsd]",
   "recipe[ipv6::freebsd]",
   "recipe[tmux]",
-  "recipe[git::freebsd]",
+  "recipe[git]",
   "recipe[homedirs::mrtazz]",
   "recipe[sudo]",
   "recipe[nagios::nrpe]",
