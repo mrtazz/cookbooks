@@ -18,5 +18,6 @@ template "/usr/local/etc/apache22/Includes/owncloud.conf" do
   owner "root"
   group "wheel"
   mode 0644
-  variables( :docroot => davroot )
+  variables( :docroot => davroot,
+             :hostname => "owncloud.unwiredcouch.com" )
 end
