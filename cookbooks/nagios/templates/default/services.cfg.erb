@@ -1,10 +1,10 @@
 # Define a host for the local machine
 ## services
 define service{
-    use                             local-service
-    hostgroup_name                  freebsd-base
-    service_description             PING
-    check_command			              check_ping!200.0,20%!500.0,60%
+        use                             local-service
+        hostgroup_name                  freebsd-base
+        service_description             PING
+        check_command                   check_ping!500.0,20%!1000.0,60%
 }
 
 
@@ -15,35 +15,35 @@ define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  freebsd-base
         service_description             Root Partition
-	      check_command			              check_nrpe!check_root
+        check_command                   check_nrpe!check_root
         }
 
 define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  freebsd-base
         service_description             vulnerable packages
-	      check_command			              check_nrpe!check_portaudit
+        check_command                   check_nrpe!check_portaudit
         }
 
 define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  freebsd-base
         service_description             zpool status
-	      check_command			              check_nrpe!check_zpool
+        check_command                   check_nrpe!check_zpool
         }
 
 define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  freebsd-base
         service_description             chef-client
-	      check_command			              check_nrpe!check_chef
+        check_command                   check_nrpe!check_chef
         }
 
 define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  freebsd-base
         service_description             disk smartmon health
-	      check_command			              check_nrpe!check_smartmon
+        check_command                   check_nrpe!check_smartmon
         }
 
 
@@ -51,7 +51,7 @@ define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  backup
         service_description             backup snapshot age
-	      check_command			              check_nrpe!check_snapshots
+        check_command                   check_nrpe!check_snapshots
         }
 
 # Define a service to check the number of currently logged in
@@ -61,7 +61,7 @@ define service{
         use                             local-service         ; Name of service template to use
         host_name                       localhost
         service_description             Current Users
-	      check_command			check_local_users!2!3
+        check_command                   check_local_users!5!7
         }
 
 
@@ -72,7 +72,7 @@ define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  freebsd-base
         service_description             Total Processes
-	      check_command	                  check_nrpe!check_total_procs
+        check_command                   check_nrpe!check_total_procs
         }
 
 
@@ -82,7 +82,7 @@ define service{
         use                             local-service         ; Name of service template to use
         host_name                       localhost
         service_description             Current Load
-        check_command			check_local_load!5.0,4.0,3.0!10.0,6.0,4.0
+        check_command                   check_local_load!5.0,4.0,3.0!10.0,6.0,4.0
         }
 
 
@@ -93,7 +93,7 @@ define service{
         use                             local-service         ; Name of service template to use
         host_name                       localhost
         service_description             Swap Usage
-        check_command			check_local_swap!20!10
+        check_command                   check_local_swap!20!10
         }
 
 
@@ -104,7 +104,7 @@ define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  freebsd-base
         service_description             SSH
-        check_command			check_ssh
+        check_command                   check_ssh
         }
 
 
@@ -115,70 +115,70 @@ define service{
         use                             local-service         ; Name of service template to use
         host_name                       localhost
         service_description             HTTP
-        check_command			check_http
-        notifications_enabled		0
+        check_command                   check_http
+        notifications_enabled           0
         }
 
 define service{
-        use		local-service		; Inherit default values from a template
-        hostgroup_name         freebsd-base
-        service_description	SMTP
-        check_command	check_smtp
-	}
+        use                             local-service   ; Inherit default values from a template
+        hostgroup_name                  freebsd-base
+        service_description             SMTP
+        check_command                   check_smtp
+  }
 
 define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  imapserver
         service_description             IMAP
-        check_command			check_imap
+        check_command                   check_imap
         }
 
 define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  ircbouncer
         service_description             znc bouncer
-        check_command			check_tcp!33333
+        check_command                   check_tcp!33333
         }
 
 define service{
         use                             local-service         ; Name of service template to use
         host_name                       localhost
         service_description             owncloud HTTP
-        check_command			check_http_remote!owncloud.unwiredcouch.com
+        check_command                   check_http_remote!owncloud.unwiredcouch.com
         }
 define service{
         use                             local-service         ; Name of service template to use
         host_name                       localhost
         service_description             owncloud HTTPS
-        check_command			check_https_remote!owncloud.unwiredcouch.com
+        check_command                   check_https_remote!owncloud.unwiredcouch.com
         }
 define service{
         use                             local-service         ; Name of service template to use
         host_name                       localhost
         service_description             redis URL shortener
-        check_command			check_tcp_remote!catfish.redistogo.com!9424
+        check_command                   check_tcp_remote!catfish.redistogo.com!9424
         }
 define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  owncloud
         service_description             HTTPS
-        check_command			check_https!owncloud.unwiredcouch.com
+        check_command                   check_https!owncloud.unwiredcouch.com
         }
 define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  owncloud
         service_description             HTTP
-        check_command			check_http!owncloud.unwiredcouch.com
+        check_command                   check_http!owncloud.unwiredcouch.com
         }
 define service{
         use                             local-service         ; Name of service template to use
         host_name                       localhost
         service_description             mrtz.cc
-        check_command			check_http_remote!mrtz.cc
+        check_command                   check_http_remote!mrtz.cc
         }
 define service{
         use                             local-service         ; Name of service template to use
         host_name                       localhost
         service_description             blog
-        check_command			check_http_remote!www.unwiredcouch.com
+        check_command                   check_http_remote!www.unwiredcouch.com
         }
