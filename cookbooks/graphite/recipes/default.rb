@@ -10,6 +10,7 @@
 package "py27-whisper"
 package "py27-carbon"
 package "py27-graphite-web"
+package "uwsgi"
 
 template "/usr/local/etc/carbon/carbon.conf" do
   source "carbon.conf.erb"
