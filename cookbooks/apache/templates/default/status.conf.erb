@@ -1,0 +1,19 @@
+ExtendedStatus On
+<VirtualHost *:80>
+    ServerName <%= @hostname %>
+    ServerAlias localhost
+    <Location /server-status>
+        SetHandler server-status
+        Order deny,allow
+        Deny from all
+        Allow from 127.0.0.1
+    </Location>
+
+
+    <Location /server-info>
+        SetHandler server-info
+        Order deny,allow
+        Deny from all
+        Allow from 127.0.0.1
+    </Location>
+</VirtualHost>

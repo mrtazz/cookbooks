@@ -20,3 +20,11 @@ directory "/var/log/httpd/" do
   group "wheel"
   mode 0755
 end
+
+template "/usr/local/etc/apache22/Includes/status.conf" do
+  source "status.conf.erb"
+  owner "root"
+  group "wheel"
+  mode 0644
+  variables({:hostname => node[:fqdn]})
+end

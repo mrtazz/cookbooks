@@ -4,7 +4,7 @@
 
 # XXX You need to set this up!
 # Read http://code.google.com/p/modwsgi/wiki/ConfigurationDirectives#WSGISocketPrefix
-WSGISocketPrefix run/wsgi
+WSGISocketPrefix /var/run/wsgi
 
 <VirtualHost *:443>
   ServerName <%= @hostname %>
@@ -25,7 +25,7 @@ WSGISocketPrefix run/wsgi
 
   # XXX You will need to create this file! There is a graphite.wsgi.example
   # file in this directory that you can safely use, just copy it to graphite.wgsi
-  WSGIScriptAlias / <%= @wsgi_file %>/graphite.wsgi
+  WSGIScriptAlias / <%= @wsgi_path %>/graphite.wsgi
 
   Alias /content/ <%= @graphite_root %>/content/
   <Location "/content/">
