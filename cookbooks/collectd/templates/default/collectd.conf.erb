@@ -28,22 +28,9 @@ LoadPlugin cpu
 LoadPlugin memory
 LoadPlugin uptime
 LoadPlugin df
-
-
-## plugin configuration
-#<LoadPlugin "python">
-#  Globals true
-#</LoadPlugin>
-#
-#<Plugin "python">
-#  ModulePath "/usr/local/lib/collectd"
-#  Import "collectd-librato"
-#
-#  <Module "collectd-librato">
-#    APIToken "<%= @librato_token %>"
-#    Email "<%= @librato_user %>"
-#  </Module>
-#</Plugin>
+<% if @has_apache %>
+LoadPlugin "apache"
+<% end %>
 
 # send to graphite
 LoadPlugin write_graphite
@@ -68,3 +55,11 @@ LoadPlugin write_graphite
   ReportInodes false
 </Plugin>
 <% end -%>
+
+<% if @has_apache %>
+<Plugin "apache">
+   <Instance "apache80">
+       URL "http://localhost/server-status?auto"
+   </Instance>
+</Plugin>
+<% end %>
