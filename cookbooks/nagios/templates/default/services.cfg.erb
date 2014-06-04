@@ -14,8 +14,22 @@ define service{
 define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  freebsd-base
-        service_description             Root Partition
+        service_description             / Partition
         check_command                   check_nrpe!check_root
+        }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  freebsd-base
+        service_description             /usr Partition
+        check_command                   check_nrpe!check_usr
+        }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  freebsd-base
+        service_description             /var Partition
+        check_command                   check_nrpe!check_var
         }
 
 define service{
@@ -23,6 +37,13 @@ define service{
         hostgroup_name                  freebsd-base
         service_description             vulnerable packages
         check_command                   check_nrpe!check_portaudit
+        }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  freebsd-base
+        service_description             FreeBSD security updates
+        check_command                   check_nrpe!check_freebsd_update
         }
 
 define service{

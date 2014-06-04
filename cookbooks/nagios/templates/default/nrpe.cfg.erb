@@ -228,6 +228,8 @@ command[check_mrtazz_home]=/usr/local/libexec/nagios/check_disk -w 20% -c 10% -p
 command[check_smartmon]=/usr/local/nagios/plugins/check_smartmon.sh
 
 <% @checks.each do |check| %>
-command[<%= check[:name] %>]=<%= @plugindir %>/<%= check[:script] %>
+  <% sudo = check[:run_with_sudo] ? "sudo " : "" %>
+  <% cmd = "#{sudo}#{@plugindir}/#{check[:script]}" %>
+command[<%= check[:name] %>]=<%= cmd %>
 <% end %>
 
