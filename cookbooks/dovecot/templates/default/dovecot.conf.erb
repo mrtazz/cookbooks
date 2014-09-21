@@ -36,8 +36,11 @@ service pop3-login {
   }
 }
 ssl = required
-ssl_cert = </usr/local/etc/ssl/certs/dovecot.pem
-ssl_key = </usr/local/etc/ssl/private/dovecot.key
+ssl_ca = </usr/local/ssl/intermediate.cert
+ssl_cert = </usr/local/ssl/star.unwiredcouch.com.cert
+ssl_key = </usr/local/ssl/star.unwiredcouch.com.key
+ssl_cipher_list = HIGH:!ADH!LOW:!SSLv2:!EXP:!MEDIUM:!DES:!RC4:!EXPORT:!MD5
+
 userdb {
   args = blocking=yes
   driver = passwd
