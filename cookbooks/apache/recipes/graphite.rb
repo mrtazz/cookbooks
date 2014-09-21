@@ -12,3 +12,15 @@ template "/usr/local/etc/apache22/Includes/graphite.conf" do
            )
   notifies :restart, "service[apache22]"
 end
+
+dashboards_dir = "/usr/local/www/dashboards/"
+
+template "/usr/local/etc/apache22/Includes/dashboards.conf" do
+  source "dashboards.conf.erb"
+  owner "root"
+  group "wheel"
+  mode 0644
+  variables( :hostname => "dashboards.unwiredcouch.com",
+             :docroot => "#{dashboards_dir}/htdocs"
+           )
+end

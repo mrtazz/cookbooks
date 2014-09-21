@@ -11,8 +11,9 @@
     ServerName <%= @hostname %>
     ServerAlias <%= node[:fqdn] %>
     SSLEngine On
-    SSLCertificateFile "/usr/local/etc/apache22/ssl.cert"
-    SSLCertificateKeyFile "/usr/local/etc/apache22/ssl.key"
+    SSLCertificateFile "/usr/local/ssl/star.unwiredcouch.com.cert"
+    SSLCertificateKeyFile "/usr/local/ssl/star.unwiredcouch.com.key"
+    SSLCertificateChainFile "/usr/local/ssl/intermediate.cert"
 
     DocumentRoot <%= @docroot %>
     <Directory "<%= @docroot %>">

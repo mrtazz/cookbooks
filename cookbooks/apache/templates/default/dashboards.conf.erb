@@ -1,0 +1,23 @@
+<VirtualHost *:443>
+    ServerName <%= @hostname %>
+    ServerAlias <%= node[:fqdn] %>
+    SSLEngine On
+    SSLCertificateFile "/usr/local/ssl/star.unwiredcouch.com.cert"
+    SSLCertificateKeyFile "/usr/local/ssl/star.unwiredcouch.com.key"
+    SSLCertificateChainFile "/usr/local/ssl/intermediate.cert"
+
+    DocumentRoot <%= @docroot %>
+    <Directory <%= @docroot %>>
+      Order deny,allow
+      Deny from all
+      AuthUserFile /usr/local/etc/nagios/htpasswd.users
+      AuthName "Dashboard Auth"
+      AuthType Basic
+      Satisfy Any
+      require valid-user
+    </Directory>
+
+  CustomLog /var/log/httpd/dashboards.unwiredcouch.com-access.log combined
+  ErrorLog /var/log/httpd/dashboards.unwiredcouch.com-error.log
+
+</VirtualHost>

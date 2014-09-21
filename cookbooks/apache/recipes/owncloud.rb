@@ -1,4 +1,4 @@
-davroot = "/usr/home/mrtazz/owncloud"
+davroot = "/home/mrtazz/owncloud"
 the_group = "op_mrtazz"
 
 group the_group do
