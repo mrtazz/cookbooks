@@ -1,6 +1,8 @@
 package "python27"
 
-package "collectd5"
+package "collectd5" do
+  action :install
+end
 
 template "/usr/local/lib/collectd/collectd-librato.py" do
   source "collectd-librato.py.erb"
