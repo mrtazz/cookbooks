@@ -20,6 +20,22 @@ template "/usr/local/etc/carbon/carbon.conf" do
   notifies :restart, "service[carbon]"
 end
 
+cookbook_file "/usr/local/etc/carbon/storage-schemas.conf" do
+  source "storage-schemas.conf"
+  owner "root"
+  group "wheel"
+  mode 0644
+  notifies :restart, "service[carbon]"
+end
+
+cookbook_file "/usr/local/etc/carbon/storage-aggregation.conf" do
+  source "storage-aggregation.conf"
+  owner "root"
+  group "wheel"
+  mode 0644
+  notifies :restart, "service[carbon]"
+end
+
 service "carbon" do
   action [:enable, :start]
   supports [:enable, :start, :stop, :restart]
