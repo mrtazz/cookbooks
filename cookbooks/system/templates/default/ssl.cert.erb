@@ -1,0 +1,8 @@
+<% if @intermediate_cert %>
+-----BEGIN CERTIFICATE-----
+<%= @intermediate_cert.strip! %>
+-----END CERTIFICATE-----
+<% end %>
+-----BEGIN CERTIFICATE-----
+<%= @the_cert.strip! %>
+-----END CERTIFICATE-----
