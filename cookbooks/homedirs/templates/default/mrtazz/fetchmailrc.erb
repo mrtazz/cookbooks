@@ -4,6 +4,6 @@ proto  <%= a["proto"] %>
 user   <%= a["user"] %> smtpname <%= a["smtpname"] %>
 pass   "<%= a["password"] %>"
 ssl
-sslfingerprint "<%= a["sslfprint"] %>"
+sslcertfile /usr/local/share/certs/ca-root-nss.crt
 
 <% end %>
