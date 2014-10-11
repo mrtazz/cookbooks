@@ -46,20 +46,6 @@ link "#{homedir}/.vimrc" do
     to "#{homedir}/.vim/vimrc"
 end
 
-# muttfiles
-script "install_muttfiles" do
-  interpreter "sh"
-  user "mrtazz"
-  cwd homedir
-  code <<-EOH
-  git clone https://github.com/mrtazz/muttfiles.git .mutt
-  EOH
-  not_if { File.exists? "#{homedir}/.mutt" }
-end
-link "#{homedir}/.muttrc" do
-    to "#{homedir}/.mutt/basic-settings"
-end
-
 # authorized keys
 directory "#{homedir}/.ssh" do
   action :create
@@ -80,36 +66,12 @@ template "#{homedir}/.ssh/authorized_keys" do
   variables( :keys => keys )
 end
 
-script "install zshfiles from github" do
-  interpreter "sh"
-  user "mrtazz"
-  cwd homedir
-  code <<-EOS
-  git clone git://github.com/mrtazz/zshfiles.git .zsh
-  cd .zsh
-  make install
-  EOS
-  not_if { File.directory? "#{homedir}/.zsh" }
-end
-
 directory "#{homedir}/bin" do
   action :create
   owner "mrtazz"
   group mrtazz_group
   mode "0755"
 end
-
-script "hub install from github" do
-  interpreter "sh"
-  user "mrtazz"
-  cwd homedir
-  code <<-EOS
-    curl http://defunkt.io/hub/standalone -sLo bin/hub
-    chmod +x bin/hub
-  EOS
-  not_if { File.exists? "#{homedir}/bin/hub" }
-end
-
 
 bitlbee_password = creds["bitlbee"]["password"]
 
