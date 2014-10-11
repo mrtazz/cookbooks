@@ -9,24 +9,19 @@ run_path "#{base_dir}/run"
 checksum_path "#{base_dir}/checksum"
 file_cache_path "#{base_dir}/cache"
 file_backup_path "#{base_dir}/backup"
+ssl_ca_file "/usr/local/share/certs/ca-root-nss.crt"
+ssl_verify_mode :verify_peer
 
 cache_options({:path => "#{base_dir}/cache/checksums", :skip_expires => true})
 
 require 'rubygems'
-require 'syslog-logger'
 log_level        :info
 verbose_logging false
 
-Logger::Syslog.class_eval do
-  attr_accessor :sync, :formatter
-  def write(msg)
-  end
-  def close
-  end
+begin
+  require "lastrun_update"
+  handler = LastRunUpdateHandler.new
+  report_handlers    << handler
+  exception_handlers << handler
+rescue
 end
-log_location Logger::Syslog.new("chef-client")
-
-require "lastrun_update"
-handler = LastRunUpdateHandler.new
-report_handlers    << handler
-exception_handlers << handler
