@@ -1,7 +1,3 @@
-package "portaudit" do
-  action :install
-end
-
 template "/etc/ssh/sshd_config" do
   source "sshd_config.erb"
   owner "root"
