@@ -6,10 +6,10 @@ run_list(
   "recipe[htop]",
   "recipe[rsync]",
   "recipe[elinks]",
-  "recipe[mosh::freebsd]",
+  "recipe[mosh]",
   "recipe[mutt::freebsd]",
-  "recipe[weechat::freebsd]",
-  "recipe[vim::freebsd]",
+  "recipe[weechat]",
+  "recipe[vim]",
   "recipe[procmail]",
   "recipe[fetchmail]"
 )
