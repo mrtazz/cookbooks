@@ -62,7 +62,7 @@ define service{
 
 define service{
         use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base
+        hostgroup_name                  freebsd-base, !VirtualServers
         service_description             disk smartmon health
         check_command                   check_nrpe!check_smartmon
         }

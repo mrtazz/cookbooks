@@ -21,7 +21,7 @@ nagios_dirs = %w{
   hostgroups
 }
 
-roles = []
+roles = ["VirtualServers"]
 # get secrets
 secret = Chef::EncryptedDataBagItem.load_secret("/root/.chef/credentials-bag.key")
 pushover_creds = Chef::EncryptedDataBagItem.load("credentials", "pushover", secret)
@@ -72,6 +72,20 @@ template "/usr/local/etc/nagios/nagios.cfg" do
   variables(:cfg_dirs => nagios_dirs)
 end
 
+template "/usr/local/etc/nagios/resource.cfg" do
+  source "resource.cfg.erb"
+  owner "root"
+  group "wheel"
+  mode 0644
+end
+
+template "/usr/local/etc/nagios/cgi.cfg" do
+  source "cgi.cfg.erb"
+  owner "root"
+  group "wheel"
+  mode 0644
+end
+
 
 nodes = search(:node, "domain:*unwiredcouch.com")
 
@@ -82,6 +96,10 @@ nodes.each do |computer|
     computer[:roles].each do |role|
       hostgroups << "#{role}"
     end
+  end
+
+  if computer[:is_virtual]
+    hostgroups << "VirtualServers"
   end
 
   if computer[:fqdn].eql? node[:fqdn]
