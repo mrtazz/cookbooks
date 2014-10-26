@@ -8,8 +8,11 @@ EXITCODE=0
 for backup in $(zfs list -r -o name -H backup | grep "/"); do
   zfs list -r -t snapshot ${backup}@${YESTERDAY}-23:00:00 > /dev/null 2>&1
   if [ $? != 0 ]; then
-    echo "Snapshot of ${backup} missing for ${YESTERDAY}."
-    EXITCODE=2
+    zfs list -r -t snapshot ${backup}@${YESTERDAY}-23:00:01 > /dev/null 2>&1
+    if [ $? != 0 ]; then
+      echo "Snapshot of ${backup} missing for ${YESTERDAY}."
+      EXITCODE=2
+    fi
   fi
 done
 
