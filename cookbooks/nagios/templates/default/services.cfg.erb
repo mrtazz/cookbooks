@@ -34,7 +34,7 @@ define service{
 
 define service{
         use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base
+        hostgroup_name                  freebsd-base, jail
         service_description             vulnerable packages
         check_command                   check_nrpe!check_portaudit
         }
@@ -55,7 +55,7 @@ define service{
 
 define service{
         use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base
+        hostgroup_name                  freebsd-base, jail
         service_description             chef-client
         check_command                   check_nrpe!check_chef
         }
