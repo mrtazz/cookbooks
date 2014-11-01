@@ -5,5 +5,6 @@ run_list(
   "recipe[apache]",
   "recipe[php]",
   "recipe[apache::ssl]",
+  "recipe[owncloud]",
   "recipe[apache::owncloud]"
 )

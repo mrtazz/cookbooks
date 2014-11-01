@@ -9,13 +9,15 @@ WSGISocketPrefix /var/run/wsgi
 <VirtualHost *:443>
   ServerName <%= @hostname %>
   ServerAlias <%= node[:fqdn] %>
-  SSLEngine On
-  SSLCertificateFile "/usr/local/ssl/star.unwiredcouch.com.cert"
-  SSLCertificateKeyFile "/usr/local/ssl/star.unwiredcouch.com.key"
-  SSLCertificateChainFile "/usr/local/ssl/intermediate.cert"
   ErrorLog /var/log/httpd/<%= @hostname %>-error.log
   CustomLog /var/log/httpd/<%= @hostname %>-access.log common
   DocumentRoot "<%= @graphite_root %>"
+
+  # SSL settings
+  SSLEngine On
+  SSLCertificateFile "/usr/local/ssl/star.unwiredcouch.com.cert"
+  SSLCertificateChainFile "/usr/local/ssl/intermediate.cert"
+  SSLCertificateKeyFile "/usr/local/ssl/star.unwiredcouch.com.key"
 
   # I've found that an equal number of processes & threads tends
   # to show the best performance for Graphite (ymmv).

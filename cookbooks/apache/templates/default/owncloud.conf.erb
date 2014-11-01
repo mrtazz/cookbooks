@@ -1,6 +1,6 @@
 <VirtualHost *:80>
     ServerName <%= @hostname %>
-    ServerAlias <%= node[:fqdn] %>
+
     <IfModule mod_rewrite.c>
       RewriteEngine On
       RewriteCond %{HTTPS} off
@@ -9,19 +9,23 @@
 </VirtualHost>
 <VirtualHost *:443>
     ServerName <%= @hostname %>
-    ServerAlias <%= node[:fqdn] %>
+
     SSLEngine On
     SSLCertificateFile "/usr/local/ssl/star.unwiredcouch.com.cert"
-    SSLCertificateKeyFile "/usr/local/ssl/star.unwiredcouch.com.key"
     SSLCertificateChainFile "/usr/local/ssl/intermediate.cert"
+    SSLCertificateKeyFile "/usr/local/ssl/star.unwiredcouch.com.key"
 
     DocumentRoot <%= @docroot %>
     <Directory "<%= @docroot %>">
       Options None
       Options +FollowSymlinks
       AllowOverride All
+    <% if node[:apache_version] == "2.4" %>
       Order allow,deny
       Allow from all
+    <% else %>
+      Require all granted
+    <% end %>
     </Directory>
 
   CustomLog /var/log/httpd/<%= @hostname %>-access.log combined

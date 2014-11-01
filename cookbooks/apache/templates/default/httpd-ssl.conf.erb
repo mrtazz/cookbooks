@@ -84,6 +84,10 @@ SSLMutex  "file:/var/run/ssl_mutex"
 ##   SSL Engine Switch:
 ##   Enable/Disable SSL for this virtual host.
 #SSLEngine on
+SSLEngine On
+SSLCertificateFile "/usr/local/ssl/star.unwiredcouch.com.cert"
+SSLCertificateKeyFile "/usr/local/ssl/star.unwiredcouch.com.key"
+SSLCertificateChainFile "/usr/local/ssl/intermediate.cert"
 #
 ##   SSL Protocol support:
 ##   List the protocol versions which clients are allowed to
