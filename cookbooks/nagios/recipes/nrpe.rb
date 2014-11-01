@@ -2,7 +2,7 @@ package "nrpe" do
   action :install
 end
 
-nagioshosts = ["127.0.0.1"]
+nagioshosts = ["127.0.0.1", node[:ipaddress]]
 plugindir = "/usr/local/nagios/plugins"
 node_nagiosconfig = node[:nagios] || {}
 
