@@ -1,5 +1,5 @@
 <IfModule !wsgi_module.c>
-    LoadModule wsgi_module libexec/apache22/mod_wsgi.so
+    LoadModule wsgi_module libexec/apache24/mod_wsgi.so
 </IfModule>
 
 # XXX You need to set this up!
@@ -47,7 +47,6 @@ WSGISocketPrefix /var/run/wsgi
   # The graphite.wsgi file has to be accessible by apache. It won't
   # be visible to clients because of the DocumentRoot though.
   <Directory <%= @wsgi_path %>>
-          Order deny,allow
-          Allow from all
+    Require all granted
   </Directory>
 </VirtualHost>

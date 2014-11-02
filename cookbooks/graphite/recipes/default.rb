@@ -36,6 +36,15 @@ cookbook_file "/usr/local/etc/carbon/storage-aggregation.conf" do
   notifies :restart, "service[carbon]"
 end
 
+cookbook_file "/usr/local/etc/graphite/graphTemplates.conf" do
+  source "graphTemplates.conf"
+  owner "root"
+  group "wheel"
+  mode 0644
+end
+
+
+
 service "carbon" do
   action [:enable, :start]
   supports [:enable, :start, :stop, :restart]
