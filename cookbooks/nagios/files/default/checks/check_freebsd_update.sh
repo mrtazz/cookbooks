@@ -8,8 +8,8 @@ if [ ! -f ${TAGFILE} ]; then
 fi
 
 CURRENT_VERSION=$(uname -r)
-UPDATE_BASE=$(cut -f 3 -d '|' ${TAGFILE})
-UPDATE_PATCH=$(cut -f 4 -d '|' ${TAGFILE})
+UPDATE_BASE=$(cut -f 3 -d '|' < ${TAGFILE})
+UPDATE_PATCH=$(cut -f 4 -d '|' < ${TAGFILE})
 UPDATE_VERSION="${UPDATE_BASE}-p${UPDATE_PATCH}"
 
 if [ "z${CURRENT_VERSION}" == "z${UPDATE_VERSION}" ]; then
