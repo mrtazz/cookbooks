@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-if node[:platform_version] =~ /^10.0/ or node[:apache_version] == "2.4"
+if node[:platform_version] =~ /^10/ or node[:apache_version] == "2.4"
 
   package "apache24" do
     action :install

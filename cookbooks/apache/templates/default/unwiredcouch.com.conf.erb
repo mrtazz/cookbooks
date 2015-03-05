@@ -1,0 +1,40 @@
+<VirtualHost *:80>
+    ServerName <%= @hostname %>
+    <% @aliases.each do |host_alias| %>
+    ServerAlias <%= host_alias %>
+    <% end %>
+
+    <IfModule mod_rewrite.c>
+      RewriteEngine On
+      RewriteCond %{HTTPS} off
+      RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+    </IfModule>
+</VirtualHost>
+<VirtualHost *:443>
+    ServerName <%= @hostname %>
+    <% @aliases.each do |host_alias| %>
+    ServerAlias <%= host_alias %>
+    <% end %>
+
+    SSLEngine On
+    SSLCertificateFile "/usr/local/ssl/star.unwiredcouch.com.cert"
+    SSLCertificateKeyFile "/usr/local/ssl/star.unwiredcouch.com.key"
+    SSLCertificateChainFile "/usr/local/ssl/intermediate.cert"
+
+    DocumentRoot <%= @docroot %>
+    <Directory <%= @docroot %>>
+      Options None
+      Options +FollowSymlinks
+      AllowOverride All
+    <% if node[:apache_version] == "2.4" %>
+      Order allow,deny
+      Allow from all
+    <% else %>
+      Require all granted
+    <% end %>
+    </Directory>
+
+    CustomLog /var/log/httpd/<%= @hostname %>-access.log combined
+    ErrorLog /var/log/httpd/<%= @hostname %>-error.log
+
+</VirtualHost>

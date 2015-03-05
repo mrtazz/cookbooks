@@ -1,5 +1,10 @@
 package "ap24-mod_wsgi3"
 
+service "apache24" do
+  action :enable
+  supports [:restart]
+end
+
 template "/usr/local/etc/apache24/Includes/graphite.conf" do
   source "graphite.conf.erb"
   owner "root"
