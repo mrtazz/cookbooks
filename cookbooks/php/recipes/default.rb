@@ -14,3 +14,7 @@ end
 package "mod_php5" do
   action :install
 end
+
+package "php5-openssl" do
+  action :install
+end
