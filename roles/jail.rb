@@ -2,6 +2,7 @@ name "jail"
 description "freebsd servers base role"
 run_list(
   "recipe[chef-client::freebsd]",
+  "recipe[system::freebsd]",
   "recipe[collectd::freebsd]",
   "recipe[logging::freebsd]",
   "recipe[sysctl::freebsd]",
