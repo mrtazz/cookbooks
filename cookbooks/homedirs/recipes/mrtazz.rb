@@ -100,7 +100,6 @@ template "#{homedir}/.forward" do
   owner "mrtazz"
   group mrtazz_group
   mode "0600"
-  only_if { File.exists? "/usr/local/bin/procmail" }
 end
 
 if (File.exists?("/usr/local/bin/fetchmail") && (node[:mrtazz][:run_fetchmail] == true))
