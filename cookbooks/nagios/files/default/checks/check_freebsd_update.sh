@@ -7,7 +7,7 @@ if [ ! -f ${TAGFILE} ]; then
   exit 3
 fi
 
-CURRENT_VERSION=$(uname -r)
+CURRENT_VERSION=$(/bin/freebsd-version)
 UPDATE_BASE=$(cut -f 3 -d '|' < ${TAGFILE})
 UPDATE_PATCH=$(cut -f 4 -d '|' < ${TAGFILE})
 UPDATE_VERSION="${UPDATE_BASE}-p${UPDATE_PATCH}"
