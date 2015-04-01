@@ -1,0 +1,7 @@
+<% @spams.each do |address| %>
+
+:0:
+* ^(Cc|To).*<%= address %>
+/dev/null
+
+<% end %>

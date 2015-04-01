@@ -1,19 +1,17 @@
+VERBOSE=off
 DEFAULT=$HOME/Mails/INBOX/
-LOGFILE=$HOME/log/procmail.log
+PMDIR=$HOME/.procmail
+LOGFILE=$PMDIR/procmail.log
 
-<% @spams.each do |address| %>
+# include spam rules
+INCLUDERC=$PMDIR/spam.rc
 
-:0:
-* ^(Cc|To).*<%= address %>
-$HOME/Mails/Junk/
+# include mailing list rules
+INCLUDERC=$PMDIR/maillists.rc
 
-<% end %>
+# include custom rules
+INCLUDERC=$PMDIR/custom.rc
 
-<% @maillists.each do |list| %>
 
-:0:
-* ^(Cc|To).*<%= list["address"] %>
-$HOME/Mails/<%= list["name"] %>/
 
-<% end %>
 
