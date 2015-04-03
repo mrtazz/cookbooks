@@ -19,6 +19,7 @@
 #Port 22
 #AddressFamily any
 #ListenAddress 0.0.0.0
+ListenAddress <%= node[:ipaddress] %>
 #ListenAddress ::
 
 # The default requires explicit activation of protocol 1
@@ -64,6 +65,9 @@
 
 # Change to yes to enable built-in password authentication.
 #PasswordAuthentication no
+<% if @no_passwords == true %>
+PasswordAuthentication no
+<% end %>
 #PermitEmptyPasswords no
 
 # Change to no to disable PAM authentication
