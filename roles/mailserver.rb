@@ -9,5 +9,9 @@ default_attributes :mail_domains => [
  ["hoogy58.de", "mrtazz"]
 ]
 run_list(
-  "recipe[sendmail::freebsd]"
+  "recipe[sendmail::freebsd]",
+  "recipe[fetchmail]",
+  "recipe[fetchmail::mrtazz]",
+  "recipe[procmail]",
+  "recipe[procmail::mrtazz]"
 )

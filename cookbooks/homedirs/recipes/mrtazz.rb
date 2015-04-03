@@ -8,44 +8,6 @@ elsif node[:platform] == "mac_os_x"
   secret_key_path = "#{homedir}/.chef/credentials-bag.key"
 end
 
-# dotfiles
-script "install_dotfiles" do
-  interpreter "sh"
-  user "mrtazz"
-  cwd homedir
-  code <<-EOH
-  git clone https://github.com/mrtazz/dotfiles.git
-  cd dotfiles
-  make install
-  EOH
-  not_if { File.exists? "#{homedir}/dotfiles" }
-end
-
-script "install_bin" do
-  interpreter "sh"
-  user "mrtazz"
-  cwd homedir
-  code <<-EOH
-  git clone https://github.com/mrtazz/bin.git
-  EOH
-  not_if { File.exists? "#{homedir}/bin" }
-end
-
-# vimfiles
-script "install_vimfiles" do
-  interpreter "sh"
-  user "mrtazz"
-  cwd homedir
-  code <<-EOH
-  git clone https://github.com/mrtazz/vimfiles.git .vim
-  EOH
-  not_if { File.exists? "#{homedir}/.vim" }
-end
-
-link "#{homedir}/.vimrc" do
-    to "#{homedir}/.vim/vimrc"
-end
-
 # authorized keys
 directory "#{homedir}/.ssh" do
   action :create
@@ -66,88 +28,11 @@ template "#{homedir}/.ssh/authorized_keys" do
   variables( :keys => keys )
 end
 
-directory "#{homedir}/bin" do
-  action :create
-  owner "mrtazz"
-  group mrtazz_group
-  mode "0755"
-end
-
-bitlbee_password = creds["bitlbee"]["password"]
-
-# procmail Maildir setup
-directory "#{homedir}/Mails" do
-  action :create
-  owner "mrtazz"
-  group mrtazz_group
-  mode "0700"
-end
-
-mrtazz_data_bag = data_bag_item('users', 'mrtazz')
-spams = mrtazz_data_bag["spamaddresses"]
-maillists = mrtazz_data_bag["maillists"]
-
-procmail_files = [
-  { :source => "mrtazz/procmailrc.erb",
-    :target => "#{homedir}/.procmailrc" },
-  { :source => "mrtazz/procmail-spam.rc.erb",
-    :target => "#{homedir}/.procmail/spam.rc" },
-  { :source => "mrtazz/procmail-maillists.rc.erb",
-    :target => "#{homedir}/.procmail/maillists.rc" },
-]
-
-directory "#{homedir}/.procmail" do
-  owner 'mrtazz'
-  group mrtazz_group
-  mode '0700'
-  action :create
-end
-
-procmail_files.each do |procfile|
-
-  template procfile[:target] do
-    source procfile[:source]
-    owner "mrtazz"
-    group mrtazz_group
-    mode "0600"
-    variables({ :spams => spams, :maillists => maillists })
-  end
-
-end
-
-file "#{homedir}/.procmail/custom.rc" do
-  owner 'mrtazz'
-  group mrtazz_group
-  mode '0600'
-  action :create_if_missing
-end
-
 template "#{homedir}/.forward" do
   source "mrtazz/forward.erb"
   owner "mrtazz"
   group mrtazz_group
   mode "0600"
-end
-
-if (File.exists?("/usr/local/bin/fetchmail") && (node[:mrtazz][:run_fetchmail] == true))
-
-  fetchmailaccounts = creds["fetchmail"]
-
-  template "#{homedir}/.fetchmailrc" do
-    source "mrtazz/fetchmailrc.erb"
-    owner "mrtazz"
-    group mrtazz_group
-    mode "0600"
-    variables( :accounts => fetchmailaccounts )
-  end
-
-  cron "user fetchmail" do
-    user "mrtazz"
-    hour "*"
-    minute "*/5"
-    command "/usr/local/bin/fetchmail -as >/dev/null 2>&1"
-  end
-
 end
 
 if (node.role? "ircbouncer")

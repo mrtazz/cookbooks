@@ -1,0 +1,12 @@
+
+<% @maillists.each do |list| %>
+
+:0:
+* ^(Cc|To).*<%= list["address"] %>
+$HOME/Mails/<%= list["name"] %>/
+
+<% end %>
+
+:0:
+* ^(From).*twitter.com
+$HOME/Mails/twitter/
