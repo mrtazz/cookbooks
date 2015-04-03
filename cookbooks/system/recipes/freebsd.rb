@@ -5,7 +5,3 @@ template "/root/.forward" do
   mode 0400
   variables( :mailaddresses => ['d@unwiredcouch.com'] )
 end
-
-package "portupgrade" do
-  action :install
-end

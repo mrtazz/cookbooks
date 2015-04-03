@@ -1,0 +1,6 @@
+# SASL (cyrus-sasl v2) sendmail build flags...
+SENDMAIL_CFLAGS=-I/usr/local/include -DSASL=2
+SENDMAIL_LDFLAGS=-L/usr/local/lib
+SENDMAIL_LDADD=-lsasl2
+# Adding to enable alternate port (smtps) for sendmail...
+SENDMAIL_CFLAGS+= -D_FFR_SMTP_SSL

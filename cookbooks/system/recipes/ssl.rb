@@ -12,7 +12,7 @@ intermediate_cert = creds["intermediatecert"]
 ssl_group = "ssl_services"
 ssl_dir = "/usr/local/ssl"
 
-group_members = ["www"]
+group_members = []
 
 if node.roles.include? "irc"
   group_members << "ircd"
@@ -34,7 +34,7 @@ template "#{ssl_dir}/ssl.cert" do
   source "ssl.cert.erb"
   owner "root"
   group ssl_group
-  mode 0440
+  mode 0400
   variables( :the_cert => Base64.encode64(Base64.decode64(the_cert)) )
 end
 
@@ -42,7 +42,7 @@ template "#{ssl_dir}/ssl.key" do
   source "ssl.key.erb"
   owner "root"
   group ssl_group
-  mode 0440
+  mode 0400
   variables( :the_key => Base64.encode64(Base64.decode64(the_key)) )
 end
 
@@ -50,7 +50,7 @@ template "#{ssl_dir}/star.unwiredcouch.com.cert" do
   source "ssl.cert.erb"
   owner "root"
   group ssl_group
-  mode 0440
+  mode 0400
   variables( :the_cert => Base64.encode64(Base64.decode64(wildcard_cert)))
 end
 
@@ -58,7 +58,7 @@ template "#{ssl_dir}/intermediate.cert" do
   source "ssl.cert.erb"
   owner "root"
   group ssl_group
-  mode 0440
+  mode 0400
   variables( :the_cert => Base64.encode64(Base64.decode64(intermediate_cert)))
 end
 
@@ -66,10 +66,16 @@ template "#{ssl_dir}/star.unwiredcouch.com.key" do
   source "ssl.key.erb"
   owner "root"
   group ssl_group
-  mode 0440
+  mode 0400
   variables( :the_key => Base64.encode64(Base64.decode64(wildcard_key)) )
 end
 
 package "ca_root_nss" do
   action :install
 end
+
+# TODO: install ca root bundle containing the intermediate
+# TODO: install crl
+# TODO: cron update of crl
+
+
