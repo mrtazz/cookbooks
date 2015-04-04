@@ -226,6 +226,7 @@ command[check_zombie_procs]=/usr/local/libexec/nagios/check_procs -w 5 -c 10 -s 
 command[check_total_procs]=/usr/local/libexec/nagios/check_procs -w 150 -c 200
 command[check_mrtazz_home]=/usr/local/libexec/nagios/check_disk -w 20% -c 10% -p /usr/home/mrtazz
 command[check_smartmon]=/usr/local/nagios/plugins/check_smartmon.sh
+command[check_saslauthd]=/usr/local/libexec/nagios/check_procs -C saslauthd
 
 <% @checks.each do |check| %>
   <% sudo = check[:run_with_sudo] ? "sudo " : "" %>

@@ -188,6 +188,10 @@ define command{
         command_line    $USER1$/check_smtp -H $HOSTADDRESS$ $ARG1$
         }
 
+define command{
+        command_name    check_smtp_tls
+        command_line    $USER1$/check_smtp -H $HOSTADDRESS$ -p 587 --starttls $ARG1$
+        }
 
 # 'check_tcp' command definition
 define command{

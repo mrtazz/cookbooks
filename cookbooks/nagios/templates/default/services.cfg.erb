@@ -142,9 +142,23 @@ define service{
 
 define service{
         use                             local-service   ; Inherit default values from a template
-        hostgroup_name                  freebsd-base
+        hostgroup_name                  freebsd-base, mailserver
         service_description             SMTP
         check_command                   check_smtp
+  }
+
+define service{
+        use                             local-service   ; Inherit default values from a template
+        hostgroup_name                  secure-smtp
+        service_description             SMTP TLS
+        check_command                   check_smtp_tls
+  }
+
+define service{
+        use                             local-service   ; Inherit default values from a template
+        hostgroup_name                  secure-smtp
+        service_description             saslauthd
+        check_command                   check_saslauthd
   }
 
 define service{
