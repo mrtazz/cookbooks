@@ -158,7 +158,7 @@ define service{
         use                             local-service   ; Inherit default values from a template
         hostgroup_name                  secure-smtp
         service_description             saslauthd
-        check_command                   check_saslauthd
+        check_command                   check_nrpe!check_saslauthd
   }
 
 define service{
