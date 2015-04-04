@@ -36,6 +36,8 @@ template "#{homedir}/.forward" do
 end
 
 if (node.role? "ircbouncer")
+  bitlbee_password = creds["bitlbee"]["password"]
+
   include_recipe "znc"
 
   # znc stuff
