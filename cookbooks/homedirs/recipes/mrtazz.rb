@@ -134,11 +134,4 @@ if (node.role? "ircbouncer")
     creates "#{homedir}/.znc/znc.pem"
   end
 
-  cron "restart znc" do
-    user "mrtazz"
-    hour "*"
-    minute "*/10"
-    command "/usr/local/bin/znc >/dev/null 2>&1"
-  end
-
 end
