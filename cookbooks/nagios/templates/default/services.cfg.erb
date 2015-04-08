@@ -49,6 +49,13 @@ define service{
 define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  freebsd-base
+        service_description             FreeBSD kernel version
+        check_command                   check_nrpe!check_freebsd_kernel
+        }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  freebsd-base
         service_description             zpool status
         check_command                   check_nrpe!check_zpool
         }
