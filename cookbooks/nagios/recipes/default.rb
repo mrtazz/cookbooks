@@ -26,10 +26,9 @@ roles = ["VirtualServers"]
 secret = Chef::EncryptedDataBagItem.load_secret("/root/.chef/credentials-bag.key")
 pushover_creds = Chef::EncryptedDataBagItem.load("credentials", "pushover", secret)
 pushover_key = pushover_creds["nagios_key"]
-opsgenie_creds = Chef::EncryptedDataBagItem.load("credentials", "opsgenie", secret)
-opsgenie_key = opsgenie_creds["api_key"]
 mrtazz_creds = Chef::EncryptedDataBagItem.load("credentials", "mrtazz", secret)
 mrtazz_pushover_id = mrtazz_creds["pushover_id"]
+slack_creds = Chef::EncryptedDataBagItem.load("credentials", "slack", secret)
 
 search(:role, "name:*") do |role|
   roles << role.name
@@ -50,7 +49,6 @@ nagios_dirs.each do |cfg_dir|
       mode 0644
       variables( :hostgroups => roles,
                  :pushover_key => pushover_key,
-                 :opsgenie_key => opsgenie_key,
                  :mrtazz_pushover_id => mrtazz_pushover_id
                )
     end
@@ -84,6 +82,24 @@ template "/usr/local/etc/nagios/cgi.cfg" do
   owner "root"
   group "wheel"
   mode 0644
+end
+
+# install deps for slack notifier
+[
+  "p5-libwww",
+  "p5-Crypt-SSLeay"
+]. each do |pkg|
+  package pkg do
+    action :install
+  end
+end
+
+template "/usr/local/libexec/nagios/notify_slack.pl" do
+  source "nagios_slack.pl.erb"
+  owner "root"
+  group "wheel"
+  mode 0755
+  variables( :token => slack_creds["nagios_token"] )
 end
 
 

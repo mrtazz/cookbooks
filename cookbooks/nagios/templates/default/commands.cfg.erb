@@ -11,16 +11,6 @@ define command{
 	}
 
 define command{
-	command_name	notify-host-opsgenie
-  command_line  $USER1$/notify-by-opsgenie -H="$HOSTNAME$" -s="$HOSTSTATE$" -c="<%= @opsgenie_key %>" -t="$NOTIFICATIONTYPE$" -d="$HOSTOUTPUT$" -T="$LONGDATETIME$" -u="$CONTACTEMAIL$"
-}
-
-define command{
-	command_name	notify-service-opsgenie
-  command_line  $USER1$/notify-by-opsgenie -H="$HOSTNAME$" -S="$SERVICEDESC$" -s="$SERVICESTATE$" -c="<%= @opsgenie_key %>" -t="$NOTIFICATIONTYPE$" -d="$SERVICEOUTPUT$" -T="$LONGDATETIME$" -u="$CONTACTEMAIL$"
-}
-
-define command{
 	command_name	notify-host-pushover
   command_line  $USER1$/notify-by-pushover -H="$HOSTNAME$" -s="$HOSTSTATE$" -a="<%= @pushover_key %>" -t="$NOTIFICATIONTYPE$" -d="$HOSTOUTPUT$" -u="$CONTACTEMAIL$"
 }
@@ -28,6 +18,16 @@ define command{
 define command{
 	command_name	notify-service-pushover
   command_line  $USER1$/notify-by-pushover -H="$HOSTNAME$" -S="$SERVICEDESC$" -s="$SERVICESTATE$" -a="<%= @pushover_key %>" -t="$NOTIFICATIONTYPE$" -d="$SERVICEOUTPUT$" -u="$CONTACTEMAIL$"
+}
+
+define command {
+  command_name     notify-service-by-slack
+  command_line     $USER1$/notify_slack.pl -field slack_channel=#infrastructure
+}
+
+define command {
+  command_name     notify-host-by-slack
+  command_line     $USER1$/notify_slack.pl -field slack_channel=#infrastructure
 }
 
 

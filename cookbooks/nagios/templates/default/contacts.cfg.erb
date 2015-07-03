@@ -12,17 +12,20 @@ define contact{
         email         <%= @mrtazz_pushover_id %>  ; <<***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
         }
 
-define contact{
-        contact_name  opsgenie    ; Short name of user
-        use           generic-contact   ; Inherit default values from generic-contact template (defined above)
-        alias         Opsgenie contact    ; Full name of user
-        email         d@unwiredcouch.com  ; <<***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
-        service_notification_commands notify-service-opsgenie
-        host_notification_commands notify-host-opsgenie
+
+define contact {
+        contact_name                             slack
+        alias                                    Slack
+        service_notification_period              24x7
+        host_notification_period                 24x7
+        service_notification_options             w,u,c,r
+        host_notification_options                d,r
+        service_notification_commands            notify-service-by-slack
+        host_notification_commands               notify-host-by-slack
         }
 
 define contactgroup{
         contactgroup_name       admins
         alias                   Nagios Administrators
-        members                 mrtazz,mrtazz_pushover
+        members                 mrtazz,mrtazz_pushover,slack
         }
