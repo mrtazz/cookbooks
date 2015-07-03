@@ -6,13 +6,13 @@ ExtendedStatus On
         SetHandler server-status
         Order deny,allow
         Deny from all
-        Allow from 127.0.0.1 <%= node[:ipaddress] %>
+        Allow from ::1 127.0.0.1 <%= node[:ipaddress] %>
     </Location>
 
     <Location /server-info>
         SetHandler server-info
         Order deny,allow
         Deny from all
-        Allow from 127.0.0.1 <%= node[:ipaddress] %>
+        Allow from ::1 127.0.0.1 <%= node[:ipaddress] %>
     </Location>
 </VirtualHost>
