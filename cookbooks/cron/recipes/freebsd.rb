@@ -11,3 +11,10 @@ cron "freebsd update" do
   hour "2"
   command "/usr/sbin/freebsd-update cron"
 end
+
+cron "set time via ntpd" do
+  user "root"
+  minute "0"
+  hour "2"
+  command "/usr/sbin/ntpdate -s"
+end
