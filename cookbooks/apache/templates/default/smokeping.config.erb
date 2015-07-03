@@ -1,0 +1,158 @@
+*** General ***
+
+owner    = Daniel S
+contact  = d@unwiredcouch.com
+mailhost = juno.nyc.unwiredcouch.com
+sendmail = /usr/sbin/sendmail
+# NOTE: do not put the Image Cache below cgi-bin
+# since all files under cgi-bin will be executed ... this is not
+# good for images.
+imgcache = /usr/local/smokeping/htdocs/img
+imgurl   = img
+datadir  = /usr/local/var/smokeping
+piddir  = /usr/local/var/smokeping
+cgiurl   = http://smokeping.nyc.unwiredcouch.com/smokeping.cgi
+smokemail = /usr/local/etc/smokeping/smokemail
+tmail = /usr/local/etc/smokeping/tmail
+# specify this to get syslog logging
+syslogfacility = local0
+# each probe is now run in its own process
+# disable this to revert to the old behaviour
+# concurrentprobes = no
+
+#*** Alerts ***
+#to = alertee@address.somewhere
+#from = smokealert@company.xy
+#
+#+someloss
+#type = loss
+## in percent
+#pattern = >0%,*12*,>0%,*12*,>0%
+#comment = loss 3 times  in a row
+
+*** Database ***
+
+step     = 300
+pings    = 20
+
+# consfn mrhb steps total
+
+AVERAGE  0.5   1  1008
+AVERAGE  0.5  12  4320
+    MIN  0.5  12  4320
+    MAX  0.5  12  4320
+AVERAGE  0.5 144   720
+    MAX  0.5 144   720
+    MIN  0.5 144   720
+
+*** Presentation ***
+
+template = /usr/local/etc/smokeping/basepage.html
+
++ charts
+
+menu = Charts
+title = The most interesting destinations
+
+++ stddev
+sorter = StdDev(entries=>4)
+title = Top Standard Deviation
+menu = Std Deviation
+format = Standard Deviation %f
+
+++ max
+sorter = Max(entries=>5)
+title = Top Max Roundtrip Time
+menu = by Max
+format = Max Roundtrip Time %f seconds
+
+++ loss
+sorter = Loss(entries=>5)
+title = Top Packet Loss
+menu = Loss
+format = Packets Lost %f
+
+++ median
+sorter = Median(entries=>5)
+title = Top Median Roundtrip Time
+menu = by Median
+format = Median RTT %f seconds
+
++ overview 
+
+width = 600
+height = 50
+range = 10h
+
++ detail
+
+width = 600
+height = 200
+unison_tolerance = 2
+
+"Last 3 Hours"    3h
+"Last 30 Hours"   30h
+"Last 10 Days"    10d
+"Last 400 Days"   400d
+
+#+ hierarchies
+#++ owner
+#title = Host Owner
+#++ location
+#title = Location
+
+*** Probes ***
+
++ FPing
+
+binary = /usr/local/sbin/fping
+
+#*** Slaves ***
+#secrets=/usr/local/etc/smokeping/smokeping_secrets
+#+boomer
+#display_name=boomer
+#color=0000ff
+#
+#+slave2
+#display_name=another
+#color=00ff00
+
+*** Targets ***
+
+probe = FPing
+
+menu = Top
+title = Network Latency Grapher
+remark = Welcome to the SmokePing website of unwiredcouch.com. \
+         Here you will learn all about the latency of our network.
+
++ nyc
+menu = nyc
+title = nyc
+host = /nyc/etsy /nyc/google-dns /nyc/leviathan /nyc/psylocke /nyc/ishikawa
+
+++ etsy
+menu = etsy
+title = etsy
+host = 38.106.64.123
+
+++ google-dns
+menu = google-dns
+title = google-dns
+host = 8.8.8.8
+
+++ leviathan
+menu = leviathan
+title = leviathan
+host = leviathan.unwiredcouch.com
+
+++ psylocke
+menu = psylocke
+title = psylocke
+host = psylocke.unwiredcouch.com
+
+++ ishikawa
+menu = ishikawa
+title = ishikawa
+host = 192.168.3.1
+

@@ -1,0 +1,15 @@
+LoadModule cgi_module libexec/apache24/mod_cgi.so
+
+<VirtualHost *:80>
+  ServerName <%= @hostname %>
+  Alias /smokeping /usr/local/smokeping/htdocs
+
+  <Directory /usr/local/smokeping/htdocs>
+      Require all granted
+      AllowOverride none
+      Options Indexes FollowSymLinks ExecCGI
+      AddHandler cgi-script .cgi .fcgi
+      DirectoryIndex index.html smokeping.fcgi
+  </Directory>
+
+</VirtualHost>
