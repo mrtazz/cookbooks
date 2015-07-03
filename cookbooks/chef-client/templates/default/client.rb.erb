@@ -12,6 +12,8 @@ file_backup_path "#{base_dir}/backup"
 ssl_ca_file "/usr/local/share/certs/ca-root-nss.crt"
 ssl_verify_mode :verify_peer
 
+pid_file "/var/run/chef.pid"
+
 cache_options({:path => "#{base_dir}/cache/checksums", :skip_expires => true})
 
 require 'rubygems'
@@ -23,5 +25,5 @@ begin
   handler = LastRunUpdateHandler.new
   report_handlers    << handler
   exception_handlers << handler
-rescue
+rescue LoadError
 end
