@@ -1,14 +1,12 @@
 docroot = "/usr/local/www/unwiredcouch/"
 domain_aliases = [
   "www.unwiredcouch.com",
-  "*.mrtazz.com",
-  "*.mrtazz.de"
 ]
 
 directory docroot do
   owner "www"
-  group "www"
-  mode 0755
+  group "mrtazz"
+  mode 0775
 end
 
 template "/usr/local/etc/apache24/Includes/unwiredcouch.com.conf" do
