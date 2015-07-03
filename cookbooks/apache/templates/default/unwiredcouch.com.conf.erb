@@ -21,6 +21,15 @@
     SSLCertificateKeyFile "/usr/local/ssl/star.unwiredcouch.com.key"
     SSLCertificateChainFile "/usr/local/ssl/intermediate.cert"
 
+    SSLCipherSuite AES128+EECDH:AES128+EDH
+    SSLProtocol All -SSLv2 -SSLv3
+    SSLHonorCipherOrder On
+    Header always set Strict-Transport-Security "max-age=2592000"
+    Header always set X-Frame-Options DENY
+    Header always set X-Content-Type-Options nosniff
+    # Requires Apache >= 2.4
+    SSLCompression off
+
     DocumentRoot <%= @docroot %>
     <Directory <%= @docroot %>>
       Options None
