@@ -22,6 +22,17 @@ directory "/var/log/httpd/" do
   mode 0755
 end
 
+template "/usr/local/etc/apache24/httpd.conf" do
+  source "apache24/httpd.conf.erb"
+  owner "root"
+  group "wheel"
+  mode 0644
+  variables( :has_php => node.recipes.include?("php"),
+             :has_ssl => node.recipes.include?("apache::ssl"),
+           )
+end
+
+
 template "/usr/local/etc/apache24/Includes/status.conf" do
   source "status.conf.erb"
   owner "root"

@@ -128,7 +128,9 @@ LoadModule version_module libexec/apache24/mod_version.so
 #LoadModule session_crypto_module libexec/apache24/mod_session_crypto.so
 #LoadModule session_dbd_module libexec/apache24/mod_session_dbd.so
 #LoadModule slotmem_shm_module libexec/apache24/mod_slotmem_shm.so
+<% if @has_ssl %>
 LoadModule ssl_module libexec/apache24/mod_ssl.so
+<% end %>
 #LoadModule lbmethod_byrequests_module libexec/apache24/mod_lbmethod_byrequests.so
 #LoadModule lbmethod_bytraffic_module libexec/apache24/mod_lbmethod_bytraffic.so
 #LoadModule lbmethod_bybusyness_module libexec/apache24/mod_lbmethod_bybusyness.so
@@ -150,10 +152,17 @@ LoadModule dir_module libexec/apache24/mod_dir.so
 #LoadModule userdir_module libexec/apache24/mod_userdir.so
 LoadModule alias_module libexec/apache24/mod_alias.so
 LoadModule rewrite_module libexec/apache24/mod_rewrite.so
+LoadModule mpm_prefork_module libexec/apache24/mod_mpm_prefork.so
+
+<% if @has_php %>
 LoadModule php5_module libexec/apache24/libphp5.so
 DirectoryIndex index.php index.html
 AddType application/x-httpd-php .php
 AddType application/x-httpd-php-source .phps
+<% else %>
+DirectoryIndex index.html
+<% end %>
+
 
 # Third party modules
 IncludeOptional etc/apache24/modules.d/[0-9][0-9][0-9]_*.conf
@@ -199,6 +208,7 @@ ServerAdmin you@example.com
 # If your host doesn't have a registered DNS name, enter its IP address here.
 #
 #ServerName www.example.com:80
+ServerName <%= node[:fqdn] %>
 
 #
 # Deny access to the entirety of your server's filesystem. You must
@@ -488,6 +498,7 @@ Include etc/apache24/extra/httpd-mpm.conf
 Include etc/apache24/extra/proxy-html.conf
 </IfModule>
 
+<% if @has_ssl %>
 # Secure (SSL/TLS) connections
 Include etc/apache24/extra/httpd-ssl.conf
 #
@@ -499,6 +510,7 @@ Include etc/apache24/extra/httpd-ssl.conf
 SSLRandomSeed startup builtin
 SSLRandomSeed connect builtin
 </IfModule>
+<% end %>
 #
 # uncomment out the below to deal with user agents that deliberately
 # violate open standards by misusing DNT (DNT *must* be a specific
