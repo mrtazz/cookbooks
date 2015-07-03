@@ -44,7 +44,7 @@ nodes.each do |computer|
   this_computer[:name] = computer[:fqdn]
   this_computer[:cpus] = computer[:cpu].nil? ? 0 : computer[:cpu][:total]
   this_computer[:apache] = computer.recipes.include?("apache")
-  this_computer[:interfaces] = computer.network.interfaces.keys.select {|k| k != "lo0"}
+  this_computer[:interfaces] = computer.network.interfaces.keys.select {|k| !k.to_s.start_with?"lo" }
   this_computer[:filesystems] = []
   computer.filesystem.each do |k,v|
     name = v[:mount] == "/" ? "/root" : v[:mount]
