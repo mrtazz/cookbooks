@@ -18,6 +18,13 @@ template "/usr/local/etc/apache24/Includes/graphite.conf" do
   notifies :restart, "service[apache24]"
 end
 
+template "/usr/local/etc/graphite/local_settings.py" do
+  source "local_settings.py.erb"
+  owner "root"
+  group "wheel"
+  mode 0644
+end
+
 dashboards_dir = "/usr/local/www/dashboards/"
 
 directory dashboards_dir do
@@ -26,11 +33,41 @@ directory dashboards_dir do
   mode 0775
 end
 
-template "/usr/local/etc/graphite/local_settings.py" do
-  source "local_settings.py.erb"
-  owner "root"
+# get a list of all nodes to show on the dashboard
+hosts = []
+nodes = search(:node, "domain:*unwiredcouch.com")
+
+nodes.each do |computer|
+
+  this_computer = {}
+
+  this_computer[:name] = computer[:fqdn]
+  this_computer[:cpus] = computer[:cpu].nil? ? 0 : computer[:cpu][:total]
+  this_computer[:apache] = computer.recipes.include?("apache")
+  this_computer[:interfaces] = computer.network.interfaces.keys.select {|k| k != "lo0"}
+  this_computer[:filesystems] = []
+  computer.filesystem.each do |k,v|
+    name = v[:mount] == "/" ? "/root" : v[:mount]
+    # cut out leading '/'
+    name[0] = ''
+    # substitute '/' with '-'
+    name.gsub!("/", "-")
+    # substitute '.' with '_'
+    name.gsub!(".", "_")
+    # and add to array
+    this_computer[:filesystems] << name
+  end
+
+  hosts << this_computer
+
+end
+
+template "#{dashboards_dir}/config.php" do
+  source "yagd.config.php.erb"
+  owner "www"
   group "wheel"
-  mode 0644
+  mode 0775
+  variables( :hosts => hosts )
 end
 
 template "/usr/local/etc/apache24/Includes/dashboards.conf" do

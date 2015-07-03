@@ -1,0 +1,21 @@
+<?php
+
+$CONFIG = array(
+    'title' => "unwiredcouch dashboards",
+    'navitems' => [
+        'Hosts' => '/hosts.php',
+        'Graphite' => '/graphite.php',
+        'Twitter' => '/tweets.php'
+    ],
+    'graphitehost' => "https://graphite.unwiredcouch.com",
+    'hosts' => array(
+      <% @hosts.each do |host| %>
+       "<%= host[:name] %>" => array(
+         "cpus" => <%= host[:cpus] %>,
+         "apache" => <%= host[:apache] %>,
+         "interfaces" => <%= host[:interfaces].to_json %>,
+         "filesystems" => <%= host[:filesystems].to_json %>,
+       ),
+    <% end %>
+    )
+);
