@@ -24,7 +24,6 @@ checks = [
   {:name => "check_portaudit", :script => "check_portaudit.sh"},
   {:name => "check_zpool", :script => "check_zpool.sh"},
   {:name => "check_snapshots", :script => "check_zfs_snapshot_age.sh"},
-  {:name => "check_chef", :script => "check_chef.sh"},
   {:name => "check_freebsd_kernel", :script => "check_freebsd_kernel.sh"},
   {:name => "check_freebsd_update", :script => "check_freebsd_update.sh", :run_with_sudo => true}
 ]

@@ -55,7 +55,7 @@ define service{
 
 define service{
         use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base
+        hostgroup_name                  freebsd-base, !VirtualServers
         service_description             zpool status
         check_command                   check_nrpe!check_zpool
         }
@@ -203,13 +203,13 @@ define service{
 define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  owncloud
-        service_description             HTTPS
+        service_description             owncloud HTTPS
         check_command                   check_https!owncloud.unwiredcouch.com
         }
 define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  owncloud
-        service_description             HTTP
+        service_description             owncloud HTTP
         check_command                   check_http!owncloud.unwiredcouch.com
         }
 define service{
@@ -224,3 +224,17 @@ define service{
         service_description             blog
         check_command                   check_http_remote!www.unwiredcouch.com
         }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        hostgroup_name                  smokeping
+        service_description             smokeping HTTP
+        check_command                   check_nrpe!check_smokeping_http
+        }
+
+define service{
+        use                             local-service   ; Inherit default values from a template
+        hostgroup_name                  smokeping
+        service_description             smokeping running
+        check_command                   check_nrpe!check_smokeping
+  }

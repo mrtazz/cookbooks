@@ -223,10 +223,13 @@ command[check_var]=/usr/local/libexec/nagios/check_disk -w 20% -c 10% -p /var
 command[check_tmp]=/usr/local/libexec/nagios/check_disk -w 20% -c 10% -p /tmp
 command[check_usr]=/usr/local/libexec/nagios/check_disk -w 20% -c 10% -p /usr
 command[check_zombie_procs]=/usr/local/libexec/nagios/check_procs -w 5 -c 10 -s Z
-command[check_total_procs]=/usr/local/libexec/nagios/check_procs -w 200 -c 250
+command[check_total_procs]=/usr/local/libexec/nagios/check_procs -w 250 -c 275
 command[check_mrtazz_home]=/usr/local/libexec/nagios/check_disk -w 20% -c 10% -p /usr/home/mrtazz
 command[check_smartmon]=/usr/local/nagios/plugins/check_smartmon.sh
-command[check_saslauthd]=/usr/local/libexec/nagios/check_procs -C saslauthd
+command[check_saslauthd]=/usr/local/libexec/nagios/check_procs -C saslauthd -w4:7 -c3:7
+command[check_smokeping]=/usr/local/libexec/nagios/check_procs -a '/usr/local/bin/smokeping' -c1:1
+command[check_smokeping_http]=/usr/local/libexec/nagios/check_http -I localhost -H smokeping.nyc.unwiredcouch.com
+command[check_chef]=/usr/local/libexec/nagios/check_procs -a '/usr/local/bin/chef-client' -w1:5
 
 <% @checks.each do |check| %>
   <% sudo = check[:run_with_sudo] ? "/usr/local/bin/sudo " : "" %>
