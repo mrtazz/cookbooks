@@ -33,6 +33,14 @@ LoadPlugin interface
 LoadPlugin "apache"
 <% end %>
 
+LoadPlugin unixsock
+<Plugin unixsock>
+  SocketFile "/var/run/collectd-unixsock"
+  SocketGroup "collectd"
+  SocketPerms "0770"
+  DeleteSocket false
+</Plugin>
+
 # send to graphite
 LoadPlugin write_graphite
 <Plugin write_graphite>
