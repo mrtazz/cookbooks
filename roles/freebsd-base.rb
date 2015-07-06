@@ -3,6 +3,7 @@ description "freebsd servers base role"
 run_list(
   "recipe[chef-client::freebsd]",
   "recipe[collectd::freebsd]",
+  "recipe[collectd::disk]",
   "recipe[logging::freebsd]",
   "recipe[sysctl::freebsd]",
   "recipe[ipv6::freebsd]",
