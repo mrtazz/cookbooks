@@ -4,6 +4,20 @@ package "collectd5" do
   action :install
 end
 
+plugin_dir = "/usr/local/collectd"
+
+# install plugin directory and cron to run all plugins every minute
+directory plugin_dir do
+  owner "root"
+  group "wheel"
+  mode 0755
+end
+
+cron "run collectd plugins" do
+  user "root"
+  command "for cmd in $(ls #{plugin_dir}/collectd-* 2>/dev/null) ; do command ${cmd} ; done"
+end
+
 # create config file
 template "/usr/local/etc/collectd.conf" do
   source "collectd.conf.erb"
