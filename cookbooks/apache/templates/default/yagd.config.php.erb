@@ -15,6 +15,15 @@ $CONFIG = array(
          "apache" => <%= host[:apache] %>,
          "interfaces" => <%= host[:interfaces].to_json %>,
          "filesystems" => <%= host[:filesystems].to_json %>,
+         "additional_metrics" => [
+           <% host[:additional_metrics].each do |name,values| %>
+           "<%= name %>" => [
+             <% values.each do |title,metric| %>
+               "<%= title %>" => "<%= metric %>",
+             <% end %>
+           ],
+           <% end %>
+         ]
        ),
     <% end %>
     )

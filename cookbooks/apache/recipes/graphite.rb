@@ -57,6 +57,7 @@ nodes.each do |computer|
     # and add to array
     this_computer[:filesystems] << name
   end
+  this_computer[:additional_metrics] = computer[:yagd][:additional_metrics] unless computer[:yagd].nil?
 
   hosts << this_computer
 
