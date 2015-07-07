@@ -10,6 +10,7 @@ BaseDir     "/var/db/collectd"
 PIDFile     "/var/run/collectd.pid"
 PluginDir   "/usr/local/lib/collectd"
 TypesDB     "/usr/local/share/collectd/types.db"
+TypesDB     "/usr/local/share/collectd/custom_types.db"
 Interval     <%= @interval || 60 %>
 Timeout      <%= @timeout || 2 %>
 ReadThreads  <%= @readthreads || 1 %>

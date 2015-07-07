@@ -18,6 +18,14 @@ cron "run collectd plugins" do
   command "for cmd in $(ls #{plugin_dir}/collectd-* 2>/dev/null) ; do command ${cmd} ; done"
 end
 
+template "/usr/local/share/collectd/custom_types.db" do
+  source "custom_types.db.erb"
+  owner "root"
+  group "wheel"
+  mode 0700
+  notifies :restart, "service[collectd]"
+end
+
 # create config file
 template "/usr/local/etc/collectd.conf" do
   source "collectd.conf.erb"
