@@ -4,6 +4,7 @@ run_list(
   "recipe[chef-client::freebsd]",
   "recipe[system::freebsd]",
   "recipe[collectd::freebsd]",
+  "recipe[collectd::mailstats]",
   "recipe[logging::freebsd]",
   "recipe[sysctl::freebsd]",
   "recipe[ipv6::freebsd]",
