@@ -9,5 +9,8 @@ node.default[:yagd][:additional_metrics][:mailstats] = {
   "messages received" => "collectd.#{node[:fqdn].gsub(".","_")}.mailstats-*.messages.rx",
   "messages sent" => "collectd.#{node[:fqdn].gsub(".","_")}.mailstats-*.messages.tx",
   "bytes received" => "collectd.#{node[:fqdn].gsub(".","_")}.mailstats-*.bytes.rx",
-  "bytes sent" => "collectd.#{node[:fqdn].gsub(".","_")}.mailstats-*.bytes.tx"
+  "bytes sent" => "collectd.#{node[:fqdn].gsub(".","_")}.mailstats-*.bytes.tx",
+  "messages rejected" => "collectd.#{node[:fqdn].gsub(".","_")}.mailstats-*.messages_rejected",
+  "messages discarded" => "collectd.#{node[:fqdn].gsub(".","_")}.mailstats-*.messages_discarded",
+  "messages quarantined" => "collectd.#{node[:fqdn].gsub(".","_")}.mailstats-*.messages_quarantined"
 }
