@@ -12,7 +12,7 @@
 PLUGIN_NAME="mailstats"
 HOSTNAME=$(hostname -f)
 COLLECTD="/usr/local/bin/collectdctl"
-MAILSTATS="/usr/sbin/mailstats -P"
+MAILSTATS="/usr/sbin/mailstats -p"
 
 ${MAILSTATS} | tail -n+2 | while read ID MSGS_FROM BYTES_FROM MSGS_TO BYTES_TO MSGS_REJ MSGS_DISC MSGS_QUAR MAILERNAME ; do
     # skip totals and TCP connections for now

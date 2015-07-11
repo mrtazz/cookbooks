@@ -1,9 +1,9 @@
 # sendmail types for mailstats plugin
-messages                rx:DERIVE:0:U, tx:DERIVE:0:U
-bytes                   rx:DERIVE:0:U, tx:DERIVE:0:U
-messages_rejected       value:DERIVE:0:U
-messages_discarded      value:DERIVE:0:U
-messages_quarantined    value:DERIVE:0:U
+messages                rx:GAUGE:0:U, tx:GAUGE:0:U
+bytes                   rx:GAUGE:0:U, tx:GAUGE:0:U
+messages_rejected       value:GAUGE:0:U
+messages_discarded      value:GAUGE:0:U
+messages_quarantined    value:GAUGE:0:U
 
 # temperature measurements
 celsius_current         value:GAUGE:-20:100
