@@ -8,7 +8,7 @@ unless node[:is_virtual]
   end
 
   node.default[:yagd][:additional_metrics][:disk_temperature] = {
-    "Disk Temperature" => "collectd.#{node[:fqdn].gsub(".","_")}.disktemp-ada*.current"
+    "Disk Temperature" => "collectd.#{node[:fqdn].gsub(".","_")}.disktemp-ada*.celsius_current"
   }
 
 end
