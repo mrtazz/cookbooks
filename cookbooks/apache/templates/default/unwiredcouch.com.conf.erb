@@ -32,6 +32,7 @@
 
     DocumentRoot <%= @docroot %>
     <Directory <%= @docroot %>>
+      SetOutputFilter DEFLATE
       Options None
       Options +FollowSymlinks
       AllowOverride All
