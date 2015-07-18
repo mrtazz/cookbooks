@@ -24,6 +24,8 @@
     # Requires Apache >= 2.4
     SSLCompression off
 
+    SetEnv no-gzip 1
+
     DocumentRoot <%= @docroot %>
     <Directory "<%= @docroot %>">
       Options None
