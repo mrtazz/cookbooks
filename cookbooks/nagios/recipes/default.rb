@@ -55,7 +55,7 @@ nagios_dirs.each do |cfg_dir|
   end
 end
 
-template "/usr/local/etc/apache22/Includes/nagios.conf" do
+template "/usr/local/etc/apache24/Includes/nagios.conf" do
   source "nagios_apache.conf.erb"
   owner "root"
   group "wheel"
@@ -104,8 +104,13 @@ end
 
 
 nodes = search(:node, "domain:*unwiredcouch.com")
+my_subdomain = node[:fqdn].split(".").drop(1).join(".")
 
 nodes.each do |computer|
+
+  subdomain = computer[:fqdn].split(".").drop(1).join(".")
+
+  next unless subdomain == my_subdomain
 
   hostgroups = []
   if computer[:roles]
@@ -129,7 +134,7 @@ nodes.each do |computer|
     server = {
       :name => computer[:fqdn].sub('.unwiredcouch.com', ''),
       :fqdn => computer[:fqdn],
-      :ip   => computer[:public_ip] || node[:ip_address],
+      :ip   => computer[:ipaddress],
       :hostgroups => hostgroups
     }
   end
@@ -142,6 +147,30 @@ nodes.each do |computer|
     variables( :server => server )
   end
 
+end
+
+# install fake hosts and services
+fake_hosts    = node[:nagios][:external_fake_hosts][:hosts]
+fake_services = node[:nagios][:external_fake_hosts][:services_file]
+
+if node.role? "homerouter"
+  fake_hosts    = node[:nagios][:home_fake_hosts][:hosts]
+  fake_services = node[:nagios][:home_fake_hosts][:services_file]
+end
+
+template "/usr/local/etc/nagios/hosts/fake_hosts.cfg" do
+  source "fake_host.cfg.erb"
+  owner "root"
+  group "wheel"
+  mode 0644
+  variables( :hosts => fake_hosts )
+end
+
+template "/usr/local/etc/nagios/services/fake_services.cfg" do
+  source "#{fake_services}.cfg.erb"
+  owner "root"
+  group "wheel"
+  mode 0644
 end
 
 service "nagios" do

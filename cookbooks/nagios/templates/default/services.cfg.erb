@@ -33,6 +33,13 @@ define service{
         }
 
 define service{
+        use                             local-service
+        hostgroup_name                  freebsd-base, jail
+        service_description             collectd running
+        check_command                   check_nrpe!check_collectd
+        }
+
+define service{
         use                             local-service         ; Name of service template to use
         hostgroup_name                  freebsd-base, jail
         service_description             vulnerable packages
@@ -184,24 +191,6 @@ define service{
 
 define service{
         use                             local-service         ; Name of service template to use
-        host_name                       localhost
-        service_description             owncloud HTTP
-        check_command                   check_http_remote!owncloud.unwiredcouch.com
-        }
-define service{
-        use                             local-service         ; Name of service template to use
-        host_name                       localhost
-        service_description             owncloud HTTPS
-        check_command                   check_https_remote!owncloud.unwiredcouch.com
-        }
-define service{
-        use                             local-service         ; Name of service template to use
-        host_name                       localhost
-        service_description             redis URL shortener
-        check_command                   check_tcp_remote!catfish.redistogo.com!9424
-        }
-define service{
-        use                             local-service         ; Name of service template to use
         hostgroup_name                  owncloud
         service_description             owncloud HTTPS
         check_command                   check_https!owncloud.unwiredcouch.com
@@ -214,19 +203,6 @@ define service{
         }
 define service{
         use                             local-service         ; Name of service template to use
-        host_name                       localhost
-        service_description             mrtz.cc
-        check_command                   check_http_remote!mrtz.cc
-        }
-define service{
-        use                             local-service         ; Name of service template to use
-        host_name                       localhost
-        service_description             blog
-        check_command                   check_http_remote!www.unwiredcouch.com
-        }
-
-define service{
-        use                             local-service         ; Name of service template to use
         hostgroup_name                  smokeping
         service_description             smokeping HTTP
         check_command                   check_nrpe!check_smokeping_http
@@ -237,4 +213,17 @@ define service{
         hostgroup_name                  smokeping
         service_description             smokeping running
         check_command                   check_nrpe!check_smokeping
+  }
+
+define service{
+        use                             local-service
+        hostgroup_name                  homerouter
+        service_description             BIND running
+        check_command                   check_nrpe!check_bind
+  }
+define service{
+        use                             local-service
+        hostgroup_name                  homerouter
+        service_description             DHCPD running
+        check_command                   check_nrpe!check_dhcpd
   }

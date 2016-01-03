@@ -1,5 +1,5 @@
 <VirtualHost *:443>
-    ServerName nagios.unwiredcouch.com
+    ServerName <%= node[:nagios][:host] || "nagios.unwiredcouch.com" %>
     SSLEngine On
 
     SSLCertificateFile "/usr/local/ssl/star.unwiredcouch.com.cert"

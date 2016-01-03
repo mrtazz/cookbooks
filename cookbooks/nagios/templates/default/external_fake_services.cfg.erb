@@ -1,0 +1,31 @@
+define service{
+        use                             local-service
+        host_name                       ExternalChecks
+        service_description             owncloud HTTP
+        check_command                   check_http_remote!owncloud.unwiredcouch.com
+        }
+define service{
+        use                             local-service
+        host_name                       ExternalChecks
+        service_description             owncloud HTTPS
+        check_command                   check_https_remote!owncloud.unwiredcouch.com
+        }
+define service{
+        use                             local-service
+        host_name                       ExternalChecks
+        service_description             redis URL shortener
+        check_command                   check_tcp_remote!catfish.redistogo.com!9424
+        }
+define service{
+        use                             local-service
+        host_name                       ExternalChecks
+        service_description             mrtz.cc
+        check_command                   check_http_remote!mrtz.cc
+        }
+define service{
+        use                             local-service
+        host_name                       ExternalChecks
+        service_description             blog
+        check_command                   check_http_remote!www.unwiredcouch.com
+        }
+

@@ -1,0 +1,8 @@
+<% @hosts.each do |server| %>
+define host{
+        use                     fake-host
+        host_name               <%= server[:name] %>
+        alias                   <%= server[:alias] %>
+        address                 127.0.0.1
+        }
+<% end %>

@@ -230,6 +230,9 @@ command[check_saslauthd]=/usr/local/libexec/nagios/check_procs -C saslauthd -w4:
 command[check_smokeping]=/usr/local/libexec/nagios/check_procs -a '/usr/local/bin/smokeping' -c1:1
 command[check_smokeping_http]=/usr/local/libexec/nagios/check_http -I localhost -H smokeping.nyc.unwiredcouch.com
 command[check_chef]=/usr/local/libexec/nagios/check_procs -a '/usr/local/bin/chef-client' -w1:5
+command[check_bind]=/usr/local/libexec/nagios/check_procs -a '/usr/local/sbin/named' -c1:1
+command[check_dhcpd]=/usr/local/libexec/nagios/check_procs -a '/usr/local/sbin/dhcpd' -c1:1
+command[check_collectd]=/usr/local/libexec/nagios/check_procs -a '/usr/local/sbin/collectd' -c1:1
 
 <% @checks.each do |check| %>
   <% sudo = check[:run_with_sudo] ? "/usr/local/bin/sudo " : "" %>

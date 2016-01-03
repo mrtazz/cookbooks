@@ -7,9 +7,20 @@ plugindir = "/usr/local/nagios/plugins"
 node_nagiosconfig = node[:nagios] || {}
 
 nodes = search(:node, "roles:nagios")
+my_subdomain = node[:fqdn].split(".").drop(1).join(".")
 
 nodes.each do |computer|
-  nagioshosts << computer[:ipaddress]
+
+  subdomain = computer[:fqdn].split(".").drop(1).join(".")
+  next unless subdomain == my_subdomain
+
+  computer[:network]['interfaces'].each do |iface, addrs|
+    addresses =  addrs['addresses'] || []
+    addresses.each do |ip, params|
+      nagioshosts << ip if params['family'].eql?('inet')
+    end
+  end
+
 end
 
 directory plugindir do
