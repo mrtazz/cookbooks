@@ -1,8 +1,8 @@
 LoadModule cgi_module libexec/apache24/mod_cgi.so
 
-<VirtualHost *:80>
+<VirtualHost *:443>
   ServerName <%= @hostname %>
-  Alias /smokeping /usr/local/smokeping/htdocs
+  DocumentRoot /usr/local/smokeping/htdocs
 
   <Directory /usr/local/smokeping/htdocs>
       Require all granted
@@ -10,6 +10,9 @@ LoadModule cgi_module libexec/apache24/mod_cgi.so
       Options Indexes FollowSymLinks ExecCGI
       AddHandler cgi-script .cgi .fcgi
       DirectoryIndex index.html smokeping.fcgi
+      AuthUserFile /usr/local/etc/nagios/htpasswd.users
+      AuthName "Smokeping Auth"
+      AuthType Basic
   </Directory>
 
 </VirtualHost>
