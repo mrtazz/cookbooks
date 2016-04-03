@@ -149,25 +149,16 @@ nodes.each do |computer|
 
 end
 
-# install fake hosts and services
-fake_hosts    = node[:nagios][:external_fake_hosts][:hosts]
-fake_services = node[:nagios][:external_fake_hosts][:services_file]
-
-if node.role? "homerouter"
-  fake_hosts    = node[:nagios][:home_fake_hosts][:hosts]
-  fake_services = node[:nagios][:home_fake_hosts][:services_file]
-end
-
 template "/usr/local/etc/nagios/hosts/fake_hosts.cfg" do
   source "fake_host.cfg.erb"
   owner "root"
   group "wheel"
   mode 0644
-  variables( :hosts => fake_hosts )
+  variables( :hosts => node[:nagios][:fake_hosts][:hosts] )
 end
 
 template "/usr/local/etc/nagios/services/fake_services.cfg" do
-  source "#{fake_services}.cfg.erb"
+  source "#{node[:nagios][:fake_hosts][:services_file]}.cfg.erb"
   owner "root"
   group "wheel"
   mode 0644
