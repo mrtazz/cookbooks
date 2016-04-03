@@ -7,7 +7,7 @@ template "/usr/local/etc/apache24/Includes/smokeping.conf" do
   owner "root"
   group "wheel"
   mode 0644
-  variables( :hostname => "smokeping.nyc.unwiredcouch.com")
+  variables( :hostname => "smokeping-nyc.unwiredcouch.com")
   notifies :restart, "service[apache24]"
 end
 
