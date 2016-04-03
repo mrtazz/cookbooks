@@ -107,7 +107,7 @@ LoadModule log_config_module libexec/apache24/mod_log_config.so
 #LoadModule logio_module libexec/apache24/mod_logio.so
 LoadModule env_module libexec/apache24/mod_env.so
 #LoadModule mime_magic_module libexec/apache24/mod_mime_magic.so
-#LoadModule expires_module libexec/apache24/mod_expires.so
+LoadModule expires_module libexec/apache24/mod_expires.so
 LoadModule headers_module libexec/apache24/mod_headers.so
 #LoadModule unique_id_module libexec/apache24/mod_unique_id.so
 LoadModule setenvif_module libexec/apache24/mod_setenvif.so
@@ -155,6 +155,7 @@ LoadModule rewrite_module libexec/apache24/mod_rewrite.so
 LoadModule mpm_prefork_module libexec/apache24/mod_mpm_prefork.so
 
 <% if @has_php %>
+# php configuration
 LoadModule php5_module libexec/apache24/libphp5.so
 DirectoryIndex index.php index.html
 AddType application/x-httpd-php .php
