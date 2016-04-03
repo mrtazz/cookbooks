@@ -1,4 +1,4 @@
-package "ap24-mod_wsgi3"
+package "ap24-mod_wsgi4"
 
 service "apache24" do
   action :enable
