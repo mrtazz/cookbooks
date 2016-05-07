@@ -1,229 +1,225 @@
-# Define a host for the local machine
-## services
+# Contents are generated from ./services.rb
 define service{
-        use                             local-service
-        hostgroup_name                  freebsd-base
-        service_description             PING
-        check_command                   check_ping!500.0,20%!1000.0,60%
+    use    local-service
+    service_description    PING
+    check_command    check_ping!500.0,20%!1000.0,60%
+    hostgroup_name    freebsd-base
 }
 
-
-# Define a service to check the disk space of the root partition
-# on the local machine.  Warning if < 20% free, critical if
-# < 10% free space on partition.
 define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base
-        service_description             / Partition
-        check_command                   check_nrpe!check_root
-        }
+    use    local-service
+    service_description    vulnerable packages
+    check_command    check_nrpe!check_portaudit
+    hostgroup_name    freebsd-base
+}
 
 define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base
-        service_description             /usr Partition
-        check_command                   check_nrpe!check_usr
-        }
+    use    local-service
+    service_description    FreeBSD security updates
+    check_command    check_nrpe!check_freebsd_update
+    hostgroup_name    freebsd-base
+}
 
 define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base
-        service_description             /var Partition
-        check_command                   check_nrpe!check_var
-        }
+    use    local-service
+    service_description    FreeBSD kernel version
+    check_command    check_nrpe!check_freebsd_kernel
+    hostgroup_name    freebsd-base
+}
 
 define service{
-        use                             local-service
-        hostgroup_name                  freebsd-base, jail
-        service_description             collectd running
-        check_command                   check_nrpe!check_collectd
-        }
+    use    local-service
+    service_description    zpool status
+    check_command    check_nrpe!check_zpool
+    hostgroup_name    freebsd-base
+}
 
 define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base, jail
-        service_description             vulnerable packages
-        check_command                   check_nrpe!check_portaudit
-        }
+    use    local-service
+    service_description    SMTP
+    check_command    check_smtp
+    hostgroup_name    freebsd-base
+}
 
 define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base
-        service_description             FreeBSD security updates
-        check_command                   check_nrpe!check_freebsd_update
-        }
+    use    local-service
+    service_description    SSH
+    check_command    check_ssh
+    hostgroup_name    freebsd-base
+}
 
 define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base
-        service_description             FreeBSD kernel version
-        check_command                   check_nrpe!check_freebsd_kernel
-        }
+    use    local-service
+    service_description    / partition
+    check_command    check_nrpe!check_root
+    hostgroup_name    freebsd-base
+}
 
 define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base, !VirtualServers
-        service_description             zpool status
-        check_command                   check_nrpe!check_zpool
-        }
+    use    local-service
+    service_description    /usr partition
+    check_command    check_nrpe!check_usr
+    hostgroup_name    freebsd-base
+}
 
 define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base, jail
-        service_description             chef-client
-        check_command                   check_nrpe!check_chef
-        }
+    use    local-service
+    service_description    /var partition
+    check_command    check_nrpe!check_var
+    hostgroup_name    freebsd-base
+}
 
 define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base, !VirtualServers
-        service_description             disk smartmon health
-        check_command                   check_nrpe!check_smartmon
-        }
-
-
-define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  backup
-        service_description             backup snapshot age
-        check_command                   check_nrpe!check_snapshots
-        }
-
-# Define a service to check the number of currently logged in
-# users on the local machine.  Warning if > 20 users, critical
-# if > 50 users.
-define service{
-        use                             local-service         ; Name of service template to use
-        host_name                       localhost
-        service_description             Current Users
-        check_command                   check_local_users!5!7
-        }
-
-
-# Define a service to check the number of currently running procs
-# on the local machine.  Warning if > 250 processes, critical if
-# > 400 users.
-define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base
-        service_description             Total Processes
-        check_command                   check_nrpe!check_total_procs
-        }
-
-
-
-# Define a service to check the load on the local machine.
-define service{
-        use                             local-service         ; Name of service template to use
-        host_name                       localhost
-        service_description             Current Load
-        check_command                   check_local_load!5.0,4.0,3.0!10.0,6.0,4.0
-        }
-
-
-
-# Define a service to check the swap usage the local machine.
-# Critical if less than 10% of swap is free, warning if less than 20% is free
-define service{
-        use                             local-service         ; Name of service template to use
-        host_name                       localhost
-        service_description             Swap Usage
-        check_command                   check_local_swap!20!10
-        }
-
-
-
-# Define a service to check SSH on the local machine.
-# Disable notifications for this service by default, as not all users may have SSH enabled.
-define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  freebsd-base
-        service_description             SSH
-        check_command                   check_ssh
-        }
-
-
-
-# Define a service to check HTTP on the local machine.
-# Disable notifications for this service by default, as not all users may have HTTP enabled.
-define service{
-        use                             local-service         ; Name of service template to use
-        host_name                       localhost
-        service_description             HTTP
-        check_command                   check_http
-        notifications_enabled           0
-        }
+    use    local-service
+    service_description    collectd running
+    check_command    check_nrpe!check_collectd
+    hostgroup_name    freebsd-base
+}
 
 define service{
-        use                             local-service   ; Inherit default values from a template
-        hostgroup_name                  freebsd-base, mailserver
-        service_description             SMTP
-        check_command                   check_smtp
-  }
+    use    local-service
+    service_description    chef-client
+    check_command    check_nrpe!check_chef
+    hostgroup_name    freebsd-base
+}
 
 define service{
-        use                             local-service   ; Inherit default values from a template
-        hostgroup_name                  secure-smtp
-        service_description             SMTP TLS
-        check_command                   check_smtp_tls
-  }
+    use    local-service
+    service_description    zpool status
+    check_command    check_nrpe!check_zpool
+    hostgroup_name    freebsd-base, !VirtualServers
+}
 
 define service{
-        use                             local-service   ; Inherit default values from a template
-        hostgroup_name                  secure-smtp
-        service_description             saslauthd
-        check_command                   check_nrpe!check_saslauthd
-  }
+    use    local-service
+    service_description    disk smartmon health
+    check_command    check_nrpe!check_smartmon
+    hostgroup_name    freebsd-base, !VirtualServers
+}
 
 define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  imapserver
-        service_description             IMAP
-        check_command                   check_imap
-        }
+    use    local-service
+    service_description    collectd_running
+    check_command    check_nrpe!check_collectd
+    hostgroup_name    jail
+}
 
 define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  ircbouncer
-        service_description             znc bouncer
-        check_command                   check_tcp!33333
-        }
+    use    local-service
+    service_description    vulnerable packages
+    check_command    check_nrpe!check_portaudit
+    hostgroup_name    jail
+}
 
 define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  owncloud
-        service_description             owncloud HTTPS
-        check_command                   check_https!owncloud.unwiredcouch.com
-        }
-define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  owncloud
-        service_description             owncloud HTTP
-        check_command                   check_http!owncloud.unwiredcouch.com
-        }
-define service{
-        use                             local-service         ; Name of service template to use
-        hostgroup_name                  smokeping
-        service_description             smokeping HTTP
-        check_command                   check_nrpe!check_smokeping_http
-        }
+    use    local-service
+    service_description    chef-client
+    check_command    check_nrpe!check_chef
+    hostgroup_name    jail
+}
 
 define service{
-        use                             local-service   ; Inherit default values from a template
-        hostgroup_name                  smokeping
-        service_description             smokeping running
-        check_command                   check_nrpe!check_smokeping
-  }
+    use    local-service
+    service_description    backup snapshot age
+    check_command    check_nrpe!check_snapshots
+    hostgroup_name    backup
+}
 
 define service{
-        use                             local-service
-        hostgroup_name                  homerouter
-        service_description             BIND running
-        check_command                   check_nrpe!check_bind
-  }
+    use    local-service
+    service_description    SMTP
+    check_command    check_smtp
+    hostgroup_name    mailserver
+}
+
 define service{
-        use                             local-service
-        hostgroup_name                  homerouter
-        service_description             DHCPD running
-        check_command                   check_nrpe!check_dhcpd
-  }
+    use    local-service
+    service_description    SMTP TLS
+    check_command    check_smtp_tls
+    hostgroup_name    secure-smtp
+}
+
+define service{
+    use    local-service
+    service_description    saslauthd
+    check_command    check_nrpe!check_saslauthd
+    hostgroup_name    secure-smtp
+}
+
+define service{
+    use    local-service
+    service_description    znc bouncer
+    check_command    check_tcp!33333
+    hostgroup_name    ircbouncer
+}
+
+define service{
+    use    local-service
+    service_description    IMAP
+    check_command    check_imap
+    hostgroup_name    imapserver
+}
+
+define service{
+    use    local-service
+    service_description    smokeping HTTP
+    check_command    check_nrpe!check_smokeping_http
+    hostgroup_name    smokeping
+}
+
+define service{
+    use    local-service
+    service_description    smokeping running
+    check_command    check_nrpe!check_smokeping
+    hostgroup_name    smokeping
+}
+
+define service{
+    use    local-service
+    service_description    BIND
+    check_command    check_nrpe!check_bind
+    hostgroup_name    homerouter
+}
+
+define service{
+    use    local-service
+    service_description    DHCPD
+    check_command    check_nrpe!check_dhcpd
+    hostgroup_name    homerouter
+}
+
+define service{
+    use    local-service
+    service_description    owncloud
+    check_command    check_http!owncloud.unwiredcouch.com
+    hostgroup_name    owncloud
+}
+
+define service{
+    use    local-service
+    service_description    owncloud HTTPS
+    check_command    check_https!owncloud.unwiredcouch.com
+    hostgroup_name    owncloud
+}
+
+define service{
+    use    local-service
+    service_description    Current Users
+    check_command    check_local_users!5!7
+    hostgroup_name    nagios
+}
+
+define service{
+    use    local-service
+    service_description    Current Load
+    check_command    check_local_load!5.0,4.0,3.0!10.0,6.0,4.0
+    hostgroup_name    nagios
+}
+
+define service{
+    use    local-service
+    service_description    Swap Usage
+    check_command    check_local_swap!20!10
+    hostgroup_name    nagios
+}
+
