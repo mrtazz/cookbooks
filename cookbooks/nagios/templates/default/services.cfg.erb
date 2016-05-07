@@ -29,13 +29,6 @@ define service{
 
 define service{
     use    local-service
-    service_description    zpool status
-    check_command    check_nrpe!check_zpool
-    hostgroup_name    freebsd-base
-}
-
-define service{
-    use    local-service
     service_description    SMTP
     check_command    check_smtp
     hostgroup_name    freebsd-base

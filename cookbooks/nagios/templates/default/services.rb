@@ -16,7 +16,6 @@ AlertDesigner.define do
       "vulnerable packages"      => "check_nrpe!check_portaudit",
       "FreeBSD security updates" => "check_nrpe!check_freebsd_update",
       "FreeBSD kernel version"   => "check_nrpe!check_freebsd_kernel",
-      "zpool status"             => "check_nrpe!check_zpool",
       "SMTP"                     => "check_smtp",
       "SSH"                      => "check_ssh",
       "/ partition"              => "check_nrpe!check_root",
