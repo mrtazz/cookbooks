@@ -7,7 +7,7 @@ the_cert = creds["sslcert"]
 the_key = creds["sslkey"]
 wildcard_cert = creds["wildcardcert"]
 wildcard_key = creds["wildcardkey"]
-intermediate_cert = creds["intermediatecert"]
+intermediate_certs = creds["intermediatecerts"]
 
 ssl_group = "ssl_services"
 ssl_dir = "/usr/local/ssl"
@@ -31,7 +31,7 @@ template "#{ssl_dir}/ssl.cert" do
   owner "root"
   group ssl_group
   mode 0400
-  variables( :the_cert => Base64.encode64(Base64.decode64(the_cert)) )
+  variables( :certs => [Base64.encode64(Base64.decode64(the_cert))] )
 end
 
 template "#{ssl_dir}/ssl.key" do
@@ -47,7 +47,7 @@ template "#{ssl_dir}/star.unwiredcouch.com.cert" do
   owner "root"
   group ssl_group
   mode 0400
-  variables( :the_cert => Base64.encode64(Base64.decode64(wildcard_cert)))
+  variables( :certs => [Base64.encode64(Base64.decode64(wildcard_cert))])
 end
 
 template "#{ssl_dir}/intermediate.cert" do
@@ -55,7 +55,7 @@ template "#{ssl_dir}/intermediate.cert" do
   owner "root"
   group ssl_group
   mode 0400
-  variables( :the_cert => Base64.encode64(Base64.decode64(intermediate_cert)))
+  variables( :certs => intermediate_certs.collect {|c| Base64.encode64(Base64.decode64(c))})
 end
 
 template "#{ssl_dir}/star.unwiredcouch.com.key" do
@@ -70,7 +70,20 @@ package "ca_root_nss" do
   action :install
 end
 
-# TODO: install ca root bundle containing the intermediate
+# this comes from ca_root_nss
+ca_bundle = File.read("/usr/local/share/certs/ca-root-nss.crt")
+
+# install ca root bundle containing the intermediate
+template "#{ssl_dir}/ca-bundle.crt" do
+  source "combined_ca_bundle.crt.erb"
+  owner "root"
+  group ssl_group
+  mode 0400
+  variables( :certs => intermediate_certs.collect {|c| Base64.encode64(Base64.decode64(c))},
+						 :ca_bundle => ca_bundle
+)
+end
+
 # TODO: install crl
 # TODO: cron update of crl
 
