@@ -2,7 +2,7 @@
 # simple script to snapshot locations on a ZFS backup pool
 
 timestamp=`date +%Y-%m-%d-%H:%M:%S`
-for volume in $(ls /backup | grep -v Archive); do
+for volume in $(/sbin/zfs list -H -r backup | grep -v Archive | awk '{print $1}' | grep "/"); do
   echo "Creating snapshot for ${volume} at date ${timestamp}"
-  /sbin/zfs snapshot backup/${volume}@${timestamp}
+  /sbin/zfs snapshot ${volume}@${timestamp}
 done
