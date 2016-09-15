@@ -14,10 +14,6 @@ ssl_dir = "/usr/local/ssl"
 
 group_members = []
 
-if node.roles.include? "irc"
-  group_members << "ircd"
-end
-
 group ssl_group do
   action :create
   members group_members
