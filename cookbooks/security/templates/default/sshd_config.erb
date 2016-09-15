@@ -18,9 +18,13 @@
 
 #Port 22
 #AddressFamily any
-#ListenAddress 0.0.0.0
+
+<% if @listen_all == true %>
+ListenAddress 0.0.0.0
+<% else %>
 ListenAddress 127.0.0.1
 ListenAddress <%= node[:ipaddress] %>
+<% end %>
 #ListenAddress ::
 
 # The default requires explicit activation of protocol 1
@@ -140,3 +144,8 @@ Subsystem	sftp	/usr/libexec/sftp-server
 #	AllowTcpForwarding no
 #	ForceCommand cvs server
 #PermitRootLogin yes
+<% if @use_duo == true %>
+AllowTcpForwarding no
+PermitTunnel no
+ForceCommand /usr/local/sbin/login_duo
+<% end %>
