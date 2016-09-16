@@ -4,7 +4,6 @@ end
 
 nagioshosts = ["127.0.0.1", node[:ipaddress]]
 plugindir = "/usr/local/nagios/plugins"
-node_nagiosconfig = node[:nagios] || {}
 
 nodes = search(:node, "roles:nagios")
 my_subdomain = node[:fqdn].split(".").drop(1).join(".")
@@ -57,7 +56,10 @@ template "#{plugindir}/check_smartmon.sh" do
   owner "root"
   group "wheel"
   mode 0555
-  variables( :disks => node_nagiosconfig[:disks] || []  )
+  variables( :disks => node[:nagios][:disk][:devices],
+             :warn_temperature => node[:nagios][:disk][:temperature][:warning],
+             :crit_temperature => node[:nagios][:disk][:temperature][:critical],
+            )
 end
 
 template "/usr/local/etc/nrpe.cfg" do
