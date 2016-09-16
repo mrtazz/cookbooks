@@ -232,7 +232,7 @@ command[check_smokeping_http]=/usr/local/libexec/nagios/check_http -I localhost 
 command[check_chef]=/usr/local/libexec/nagios/check_procs -a '/usr/local/bin/chef-client' -w1:5
 command[check_bind]=/usr/local/libexec/nagios/check_procs -a '/usr/local/sbin/named' -c1:1
 command[check_dhcpd]=/usr/local/libexec/nagios/check_procs -a '/usr/local/sbin/dhcpd' -c1:1
-command[check_collectd]=/usr/local/libexec/nagios/check_procs -a '/usr/local/sbin/collectd' -c1:1
+command[check_collectd]=/usr/local/libexec/nagios/check_procs -a '/usr/local/sbin/collectd' -c1:5
 
 <% @checks.each do |check| %>
   <% sudo = check[:run_with_sudo] ? "/usr/local/bin/sudo " : "" %>
