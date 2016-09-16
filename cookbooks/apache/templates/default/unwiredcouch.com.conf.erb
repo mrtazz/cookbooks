@@ -33,6 +33,8 @@
     DocumentRoot <%= @docroot %>
     <Directory <%= @docroot %>>
       SetOutputFilter DEFLATE
+      ExpiresActive On
+      ExpiresDefault "access plus 10 minutes"
       Options None
       Options +FollowSymlinks
       AllowOverride All
