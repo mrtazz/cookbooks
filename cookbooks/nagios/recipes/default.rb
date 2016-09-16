@@ -102,6 +102,20 @@ template "/usr/local/libexec/nagios/notify_slack.pl" do
   variables( :token => slack_creds["nagios_token"] )
 end
 
+# this is just because nagios needs a localhost definition
+template "/usr/local/etc/nagios/hosts/localhost.cfg" do
+  source "host.cfg.erb"
+  owner "root"
+  group "wheel"
+  mode 0644
+  variables( :server => {
+      :name => "localhost",
+      :fqdn => "localhost",
+      :ip   => "127.0.0.1",
+      :hostgroups => []
+    })
+end
+
 
 nodes = search(:node, "domain:*unwiredcouch.com")
 my_subdomain = node[:fqdn].split(".").drop(1).join(".")
@@ -123,28 +137,17 @@ nodes.each do |computer|
     hostgroups << "VirtualServers"
   end
 
-  if computer[:fqdn].eql? node[:fqdn]
-    server = {
-      :name => "localhost",
-      :fqdn => computer[:fqdn],
-      :ip   => "127.0.0.1",
-      :hostgroups => hostgroups
-    }
-  else
-    server = {
-      :name => computer[:fqdn].sub('.unwiredcouch.com', ''),
-      :fqdn => computer[:fqdn],
-      :ip   => computer[:ipaddress],
-      :hostgroups => hostgroups
-    }
-  end
-
   template "/usr/local/etc/nagios/hosts/#{computer[:fqdn]}.cfg" do
     source "host.cfg.erb"
     owner "root"
     group "wheel"
     mode 0644
-    variables( :server => server )
+    variables( :server => {
+      :name => computer[:fqdn].sub('.unwiredcouch.com', ''),
+      :fqdn => computer[:fqdn],
+      :ip   => computer[:ipaddress],
+      :hostgroups => hostgroups
+    })
   end
 
 end
