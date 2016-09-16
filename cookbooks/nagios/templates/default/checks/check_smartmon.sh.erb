@@ -4,9 +4,11 @@
 
 EXITCODE=0
 DISKS="<%= @disks.join(" ") %>"
+WARN="<%= @warn_temperature %>"
+CRIT="<%= @crit_temperature %>"
 
 for disk in ${DISKS}; do
-  status=`/usr/local/bin/sudo /usr/local/libexec/nagios/check_smartmon -d /dev/${disk}`
+  status=`/usr/local/bin/sudo /usr/local/libexec/nagios/check_smartmon -d /dev/${disk} -w ${WARN} -c ${CRIT}`
   if [ $? != 0 ]; then
     echo ${status}
     EXITCODE=2
