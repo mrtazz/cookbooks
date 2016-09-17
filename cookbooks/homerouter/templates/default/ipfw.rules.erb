@@ -1,0 +1,83 @@
+ipfw -q -f flush       # Delete all rules
+# Set some variables
+# outside interface
+oif="re0"
+# external DNS
+odns="8.8.8.8"
+cmd="ipfw -q add "
+skip="skipto 500"
+# just some shortcuts
+ks="keep-state"
+sks="setup keep-state"
+good_tcpo="<%= @allowed_tcp.join(",") %>"
+good_udpo="<%= @allowed_udp.join(",") %>"
+
+$cmd 00005 allow all from any to any via bridge0  # exclude LAN traffic
+$cmd 00006 allow all from any to any via re1  # exclude LAN traffic
+$cmd 00007 allow all from any to any via re2  # exclude LAN traffic
+$cmd 00010 allow all from any to any via lo0  # exclude loopback traffic
+
+$cmd 00100 divert natd ip from any to any in via $oif # NAT any inbound packets
+# Allow the packet through if it has an existing entry in the dynamic rules # table
+$cmd 00101 check-state
+
+# Authorized outbound packets
+$cmd 00120 $skip udp from any to $odns 53 out via $oif $ks
+$cmd 00121 $skip udp from any to any 67 out via $oif $ks
+$cmd 00125 $skip tcp from any to any $good_tcpo out via $oif $sks
+$cmd 00125 $skip udp from any to any $good_udpo out via $oif $ks
+$cmd 00130 $skip icmp from any to any out via $oif $ks
+
+# Deny all inbound traffic from non-routable reserved address spaces
+$cmd 00300 deny all from 192.168.0.0/16 to any in via $oif     #RFC 1918 private IP
+$cmd 00301 deny all from 172.16.0.0/12 to any in via $oif      #RFC 1918 private IP
+$cmd 00302 deny all from 10.0.0.0/8 to any in via $oif         #RFC 1918 private IP
+$cmd 00303 deny all from 127.0.0.0/8 to any in via $oif        #loopback
+$cmd 00304 deny all from 0.0.0.0/8 to any in via $oif          #loopback
+$cmd 00305 deny all from 169.254.0.0/16 to any in via $oif     #DHCP auto-config
+$cmd 00306 deny all from 192.0.2.0/24 to any in via $oif       #reserved for docs
+$cmd 00307 deny all from 204.152.64.0/23 to any in via $oif    #Sun cluster interconnect
+$cmd 00308 deny all from 224.0.0.0/3 to any in via $oif        #Class D & E multicast
+
+# allow public pings
+$cmd 00310 allow icmp from any to me in via $oif limit src-addr 5
+
+
+# Deny ident
+$cmd 00315 deny tcp from any to any 113 in via $oif
+
+# Deny all Netbios services.
+$cmd 00320 deny tcp from any to any 137 in via $oif
+$cmd 00321 deny tcp from any to any 138 in via $oif
+$cmd 00322 deny tcp from any to any 139 in via $oif
+$cmd 00323 deny tcp from any to any 81 in via $oif
+
+# Deny fragments
+$cmd 00330 deny all from any to any frag in via $oif
+
+# Deny ACK packets that did not match the dynamic rule table
+$cmd 00332 deny tcp from any to any established in via $oif
+
+# Allow traffic from ISP's DHCP server.
+# Replace x.x.x.x with the same IP address used in rule 00120.
+#$cmd 00360 allow udp from any to x.x.x.x 67 in via $oif $ks
+
+# inbound allowed TCP ports from node attributes
+<% tcp_counter = 400 %>
+<% @allowed_tcp_inbound.each do |port| %>
+$cmd 00<%= tcp_counter %> allow tcp from any to me <%= port %> in via $oif setup limit src-addr 5
+<% tcp_counter += 1 %>
+<% end %>
+
+
+# Reject and log all other incoming connections
+$cmd 00499 deny log all from any to any in via $oif
+
+$cmd 00500 divert natd ip from any to any out via $oif # skipto location for outbound stateful rules
+$cmd 00510 allow ip from any to any
+$cmd 00600 allow tcp from any to any 80 out via $oif $sks
+$cmd 00610 allow tcp from any to $odns 53 out via $oif $sks
+$cmd 00611 allow udp from any to $odns 53 out via $oif $ks
+
+# Everything else is denied and logged
+$cmd 00999 deny log all from any to any

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+CURL="/usr/local/bin/curl"
+DIG="/usr/local/bin/dig"
+TOKEN="<%= @token %>"
+DOMAIN_ID="<%= @domain %>"
+RECORD_ID="<%= @record %>" # Replace with the Record ID
+CURRENT_IP="$(${CURL} -s icanhazip.com)"
+KNOWN_IP="$(${DIG} +short <%= node[:fqdn] %> @8.8.8.8)"
+URL="https://api.dnsimple.com/v1/domains/${DOMAIN_ID}/records/${RECORD_ID}"
+
+if [ "z${KNOWN_IP}" != "z${CURRENT_IP}" ]; then
+  ${CURL} -H "Accept: application/json" \
+          -H "Content-Type: application/json" \
+          -H "X-DNSimple-Domain-Token: ${TOKEN}" \
+          -X "PUT" -s \
+          -d "{\"record\":{\"content\":\"${CURRENT_IP}\"}}" \
+          "${URL}"
+fi

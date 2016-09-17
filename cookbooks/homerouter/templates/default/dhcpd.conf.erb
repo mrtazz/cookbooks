@@ -1,0 +1,42 @@
+default-lease-time 600;
+max-lease-time 72400;
+
+authoritative;
+ddns-updates on;
+ddns-update-style interim;
+update-static-leases on;
+key "rndc-key" {
+  algorithm hmac-md5;
+  secret "<%= @key %>";
+};
+
+zone nyc.unwiredcouch.com. {
+  primary localhost;
+  key rndc-key;
+}
+zone 3.168.192.in-addr.arpa. {
+  primary localhost;
+  key rndc-key;
+}
+zone 33.168.192.in-addr.arpa. {
+  primary localhost;
+  key rndc-key;
+}
+
+subnet 192.168.3.0 netmask 255.255.255.0 {
+  range 192.168.3.10 192.168.3.200;
+  option routers 192.168.3.1;
+  option domain-name-servers 192.168.3.1;
+  option domain-name "nyc.unwiredcouch.com";
+  ddns-domainname "nyc.unwiredcouch.com.";
+  ddns-rev-domainname "in-addr.arpa.";
+}
+
+subnet 192.168.33.0 netmask 255.255.255.0 {
+  range 192.168.33.10 192.168.33.200;
+  option routers 192.168.33.1;
+  option domain-name-servers 192.168.33.1;
+  option domain-name "nyc.unwiredcouch.com";
+  ddns-domainname "nyc.unwiredcouch.com.";
+  ddns-rev-domainname "in-addr.arpa.";
+}

@@ -1,0 +1,23 @@
+$ORIGIN .
+
+$TTL 907200    ; 1 week 3 days 12 hours
+
+<%= @zone[:domain] %> IN SOA  <%= @zone[:ns] %>. webmaster.<%= @zone[:domain] %>. (
+                1263527838 ; serial
+                10800      ; refresh (3 hours)
+                3600       ; retry (1 hour)
+                604800     ; expire (1 week)
+                38400      ; minimum (10 hours 40 minutes)
+                )
+
+            NS  <%= @zone[:ns] %>.
+
+<% unless @zone[:is_reverse] == true %>
+<%= @zone[:ns] %>. A   <%= @zone[:ns_ip] %>
+<% end %>
+
+$ORIGIN <%= @zone[:domain] %>.
+
+<% @zone[:records].each do |entry| %>
+<%= entry[:name] %> <%= entry[:type] %> <%= entry[:lookup] %>
+<% end %>
