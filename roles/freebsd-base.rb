@@ -20,5 +20,10 @@ run_list(
   "recipe[system::zfs]",
   "recipe[cron::freebsd]",
   "recipe[sendmail::default]",
-  "recipe[ohai-public_ip]"
+  "recipe[ohai-public_ip]",
+  "recipe[zsh]",
+  "recipe[curl]",
+  "recipe[rsync]",
+  "recipe[mosh]",
+  "recipe[vim]"
 )
