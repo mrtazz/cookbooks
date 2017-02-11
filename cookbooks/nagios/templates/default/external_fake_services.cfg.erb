@@ -14,7 +14,7 @@ define service{
         use                             local-service
         host_name                       ExternalChecks
         service_description             mrtz.cc Redis instance
-        check_command                   check_tcp_remote!ec2-107-22-210-83.compute-1.amazonaws.com!10179
+        check_command                   check_tcp_remote!ec2-54-243-188-149.compute-1.amazonaws.com!8649
         }
 define service{
         use                             local-service
