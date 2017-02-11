@@ -66,6 +66,11 @@ LoadPlugin write_graphite
 </Plugin>
 <% end -%>
 
+LoadPlugin disk
+<Plugin "disk">
+  IgnoreSelected true
+</Plugin>
+
 <% if @has_apache %>
 <Plugin "apache">
    <Instance "apache80">

@@ -39,6 +39,13 @@ template "/usr/local/etc/collectd.conf" do
   notifies :restart, "service[collectd]"
 end
 
+node.default[:yagd][:additional_metrics][:disk_performance] = {
+  "Disk Octets" => "collectd.#{node[:fqdn].gsub(".","_")}.disk-ada*.disk_octets",
+  "Disk Ops" => "collectd.#{node[:fqdn].gsub(".","_")}.disk-ada*.disk_ops",
+  "Disk Time" => "collectd.#{node[:fqdn].gsub(".","_")}.disk-ada*.disk_time"
+}
+
+
 service "collectd" do
   supports [:start, :stop, :restart]
   action :enable
