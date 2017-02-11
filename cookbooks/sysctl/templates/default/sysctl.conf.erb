@@ -5,8 +5,14 @@
 #
 
 # Uncomment this to prevent users from seeing information about processes
-# that are being run under another UID.
-#security.bsd.see_other_uids=0
+# that are being run under another UID or GUID
+security.bsd.see_other_uids=0
+security.bsd.see_other_gids=0
+
+# don't allow unprivileged users to read dmesg
+security.bsd.unprivileged_read_msgbuf=0
+security.bsd.unprivileged_proc_debug=0
+security.bsd.stack_guard_page=1
 <% if node[:ipv6] %>
 net.inet6.ip6.accept_rtadv=1
 <% end %>
