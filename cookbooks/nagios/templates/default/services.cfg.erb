@@ -1,4 +1,4 @@
-# Contents are generated from ./services.rb
+# Contents are generated from services.rb
 define service{
     use    local-service
     service_description    PING
@@ -71,13 +71,6 @@ define service{
 
 define service{
     use    local-service
-    service_description    chef-client
-    check_command    check_nrpe!check_chef
-    hostgroup_name    freebsd-base
-}
-
-define service{
-    use    local-service
     service_description    zpool status
     check_command    check_nrpe!check_zpool
     hostgroup_name    freebsd-base, !VirtualServers
@@ -101,13 +94,6 @@ define service{
     use    local-service
     service_description    vulnerable packages
     check_command    check_nrpe!check_portaudit
-    hostgroup_name    jail
-}
-
-define service{
-    use    local-service
-    service_description    chef-client
-    check_command    check_nrpe!check_chef
     hostgroup_name    jail
 }
 

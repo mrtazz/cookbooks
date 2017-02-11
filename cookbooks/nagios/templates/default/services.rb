@@ -22,7 +22,6 @@ AlertDesigner.define do
       "/usr partition"           => "check_nrpe!check_usr",
       "/var partition"           => "check_nrpe!check_var",
       "collectd running"         => "check_nrpe!check_collectd",
-      "chef-client"              => "check_nrpe!check_chef",
     },
     "freebsd-base, !VirtualServers" => {
       "zpool status"             => "check_nrpe!check_zpool",
@@ -31,7 +30,6 @@ AlertDesigner.define do
     "jail" => {
       "collectd_running"         => "check_nrpe!check_collectd",
       "vulnerable packages"      => "check_nrpe!check_portaudit",
-      "chef-client"              => "check_nrpe!check_chef",
     },
     "backup" => {
       "backup snapshot age"      => "check_nrpe!check_snapshots",
