@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# REQUIRE: networking DAEMON
+
+. /etc/rc.subr
+
+name=etcd
+rcvar=etcd_enable
+etcd_config="/usr/local/etc/etcd/config.yml"
+
+command="/usr/local/bin/etcd"
+
+start_cmd="/usr/sbin/daemon -u etcd -c $command --config-file ${etcd_config} > /var/log/etcd/etcd.log 2>&1"
+
+load_rc_config $name
+run_rc_command "$1"
